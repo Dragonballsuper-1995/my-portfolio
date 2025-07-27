@@ -17,20 +17,31 @@
       background-color: #f9f9f9;
       color: #111;
       text-align: center;
+      transition: background-color 0.4s ease, color 0.4s ease;
     }
 
-    @media (prefers-color-scheme: dark) {
-      body {
-        background-color: #121212;
-        color: #f0f0f0;
-      }
-      .caption {
-        color: #ccc;
-      }
+    body.dark {
+      background-color: #121212;
+      color: #f0f0f0;
     }
 
     h1 {
+      margin-bottom: 1rem;
+    }
+
+    .toggle-btn {
+      background: none;
+      border: 1px solid #aaa;
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
       margin-bottom: 2rem;
+      transition: background 0.3s;
+    }
+
+    .toggle-btn:hover {
+      background-color: rgba(0,0,0,0.05);
     }
 
     .gallery {
@@ -41,13 +52,12 @@
     }
 
     .gallery-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      position: relative;
       overflow: hidden;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       transition: transform 0.3s ease;
+      animation: fadeIn 0.6s ease both;
     }
 
     .gallery-item:hover img {
@@ -62,9 +72,46 @@
     }
 
     .caption {
-      margin-top: 0.5rem;
+      position: absolute;
+      bottom: -30px;
+      left: 0;
+      width: 100%;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
       font-size: 14px;
-      color: #555;
+      text-align: center;
+      transition: bottom 0.3s ease;
+    }
+
+    .gallery-item:hover .caption {
+      bottom: 0;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body:not(.light) {
+        background-color: #121212;
+        color: #f0f0f0;
+      }
+
+      .toggle-btn {
+        border-color: #666;
+      }
+
+      .caption {
+        background: rgba(255, 255, 255, 0.15);
+      }
     }
 
     @media (max-width: 500px) {
@@ -76,37 +123,51 @@
 </head>
 <body>
   <h1>📸 Portfolio Screenshot Gallery</h1>
+  <button class="toggle-btn" onclick="toggleTheme()">🌗 Toggle Theme</button>
+
   <div class="gallery">
     <div class="gallery-item">
       <a href="./Screenshots/homepage-screenshot.png" target="_blank">
         <img src="./Screenshots/homepage-screenshot.png" alt="Homepage" />
+        <div class="caption">Homepage</div>
       </a>
-      <div class="caption">Homepage</div>
     </div>
     <div class="gallery-item">
       <a href="./Screenshots/about-screenshot.png" target="_blank">
         <img src="./Screenshots/about-screenshot.png" alt="About Page" />
+        <div class="caption">About Page</div>
       </a>
-      <div class="caption">About Page</div>
     </div>
     <div class="gallery-item">
       <a href="./Screenshots/projects-screenshot.png" target="_blank">
         <img src="./Screenshots/projects-screenshot.png" alt="Projects" />
+        <div class="caption">Projects</div>
       </a>
-      <div class="caption">Projects</div>
     </div>
     <div class="gallery-item">
       <a href="./Screenshots/skills-screenshot.png" target="_blank">
         <img src="./Screenshots/skills-screenshot.png" alt="Skills" />
+        <div class="caption">Skills</div>
       </a>
-      <div class="caption">Skills</div>
     </div>
     <div class="gallery-item">
       <a href="./Screenshots/contact-screenshot.png" target="_blank">
         <img src="./Screenshots/contact-screenshot.png" alt="Contact" />
+        <div class="caption">Contact</div>
       </a>
-      <div class="caption">Contact</div>
     </div>
   </div>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      document.body.classList.toggle('light');
+    }
+
+    // Load system theme on first load
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.body.classList.add('dark');
+    }
+  </script>
 </body>
 </html>
