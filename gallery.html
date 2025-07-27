@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Amazon-style Screenshot Zoom</title>
+  <title>Amazon-style Screenshot Zoom Gallery + Dark Mode</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
@@ -11,130 +11,169 @@
       color: #111;
       padding: 2rem;
       text-align: center;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark {
+      background: #121212;
+      color: #eee;
     }
 
     h1 {
       margin-bottom: 2rem;
     }
 
-    .viewer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
+    /* Dark mode button */
+    #darkModeBtn {
+      margin-bottom: 2rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      font-size: 1rem;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    #darkModeBtn:hover {
+      background-color: #0056b3;
     }
 
-    .main-display {
+    .gallery {
       display: flex;
-      flex-direction: row;
-      justify-content: center;
-      gap: 40px;
       flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
     }
 
     .img-wrapper {
       position: relative;
-      width: 400px;
-      height: auto;
+      width: 300px;
+      height: 200px;
       border: 1px solid #ccc;
       overflow: hidden;
+      cursor: crosshair;
+    }
+    body.dark .img-wrapper {
+      border-color: #555;
     }
 
     .img-wrapper img {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: contain;
       display: block;
+      transition: transform 0.3s ease;
+    }
+    /* Slight zoom on hover for the image */
+    .img-wrapper:hover img {
+      transform: scale(1.1);
     }
 
+    /* Zoom box for each image */
     .zoom-box {
-      display: none;
-      width: 400px;
-      height: 400px;
+      position: absolute;
+      top: 0;
+      left: 100%;
+      margin-left: 10px;
+      width: 300px;
+      height: 200px;
       border: 1px solid #ccc;
       background-repeat: no-repeat;
       background-size: 200% 200%;
+      display: none;
+      z-index: 10;
+      box-shadow: 0 0 8px rgba(0,0,0,0.3);
     }
-
-    .thumbnails {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .thumbnails img {
-      width: 80px;
-      height: auto;
-      border: 2px solid transparent;
-      cursor: pointer;
-      transition: border-color 0.2s;
-    }
-
-    .thumbnails img.active {
-      border-color: #007bff;
+    body.dark .zoom-box {
+      border-color: #555;
+      box-shadow: 0 0 8px rgba(255,255,255,0.3);
     }
 
     @media (max-width: 900px) {
-      .main-display {
+      .gallery {
         flex-direction: column;
         align-items: center;
       }
       .zoom-box {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin-left: 0;
+        transform: translate(-50%, -50%);
         width: 90vw;
-        height: 90vw;
+        height: 60vw;
+        background-size: 200% 200%;
       }
     }
   </style>
 </head>
 <body>
   <h1>📸 Portfolio Screenshot Gallery – Amazon-style Zoom</h1>
+  <button id="darkModeBtn">Toggle Dark Mode</button>
 
-  <div class="viewer">
-    <div class="main-display">
-      <div class="img-wrapper" id="imageWrapper">
-        <img id="mainImage" src="./Screenshots/homepage-screenshot.png" alt="Main Screenshot" />
-      </div>
-      <div class="zoom-box" id="zoomBox"></div>
-    </div>
-
-    <div class="thumbnails">
-      <img src="./Screenshots/homepage-screenshot.png" alt="Homepage" onclick="switchImage(this)" class="active" />
-      <img src="./Screenshots/about-screenshot.png" alt="About" onclick="switchImage(this)" />
-      <img src="./Screenshots/projects-screenshot.png" alt="Projects" onclick="switchImage(this)" />
-      <img src="./Screenshots/skills-screenshot.png" alt="Skills" onclick="switchImage(this)" />
-      <img src="./Screenshots/contact-screenshot.png" alt="Contact" onclick="switchImage(this)" />
-    </div>
+  <div class="gallery" id="gallery">
+    <!-- Images inserted by JS -->
   </div>
 
   <script>
-    const mainImage = document.getElementById("mainImage");
-    const imageWrapper = document.getElementById("imageWrapper");
-    const zoomBox = document.getElementById("zoomBox");
-    const thumbnails = document.querySelectorAll(".thumbnails img");
+    const images = [
+      { src: "./Screenshots/homepage-screenshot.png", alt: "Homepage" },
+      { src: "./Screenshots/about-screenshot.png", alt: "About" },
+      { src: "./Screenshots/projects-screenshot.png", alt: "Projects" },
+      { src: "./Screenshots/skills-screenshot.png", alt: "Skills" },
+      { src: "./Screenshots/contact-screenshot.png", alt: "Contact" },
+    ];
 
-    imageWrapper.addEventListener("mousemove", function (e) {
-      const rect = mainImage.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+    const gallery = document.getElementById("gallery");
 
-      const xPercent = (x / rect.width) * 100;
-      const yPercent = (y / rect.height) * 100;
+    images.forEach(({src, alt}) => {
+      // Create wrapper div
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("img-wrapper");
 
-      zoomBox.style.display = "block";
-      zoomBox.style.backgroundImage = `url(${mainImage.src})`;
-      zoomBox.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
+      // Create img element
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = alt;
+
+      // Create zoom box
+      const zoomBox = document.createElement("div");
+      zoomBox.classList.add("zoom-box");
+
+      wrapper.appendChild(img);
+      wrapper.appendChild(zoomBox);
+      gallery.appendChild(wrapper);
+
+      // Mouse move event to update zoom box background position
+      wrapper.addEventListener("mousemove", e => {
+        const rect = img.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const xPercent = (x / rect.width) * 100;
+        const yPercent = (y / rect.height) * 100;
+
+        zoomBox.style.display = "block";
+        zoomBox.style.backgroundImage = `url(${src})`;
+        zoomBox.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
+      });
+
+      // Hide zoom box on mouse leave
+      wrapper.addEventListener("mouseleave", () => {
+        zoomBox.style.display = "none";
+      });
     });
 
-    imageWrapper.addEventListener("mouseleave", function () {
-      zoomBox.style.display = "none";
+    // Dark mode toggle button
+    const darkModeBtn = document.getElementById("darkModeBtn");
+    darkModeBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      // Optional: change button text
+      if (document.body.classList.contains("dark")) {
+        darkModeBtn.textContent = "Switch to Light Mode";
+      } else {
+        darkModeBtn.textContent = "Switch to Dark Mode";
+      }
     });
-
-    function switchImage(thumb) {
-      thumbnails.forEach(t => t.classList.remove("active"));
-      thumb.classList.add("active");
-      mainImage.src = thumb.src;
-      zoomBox.style.backgroundImage = `url(${thumb.src})`;
-    }
   </script>
 </body>
 </html>
