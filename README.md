@@ -17,17 +17,14 @@ This is my personal developer portfolio website, built with **HTML**, **CSS**, a
 
 ## 📸 Preview
 
-<p align="center">
-  <img src="./Screenshots/homepage-screenshot.png" alt="Homepage" width="400"/>
-  <img src="./Screenshots/about-screenshot.png" alt="About Page" width="400"/>
-</p>
-<p align="center">
-  <img src="./Screenshots/projects-screenshot.png" alt="Projects Page" width="400"/>
-  <img src="./Screenshots/skills-screenshot.png" alt="Skills Page" width="400"/>
-</p>
-<p align="center">
-  <img src="./Screenshots/contact-screenshot.png" alt="Contact Page" width="400"/>
-</p>
+<div style="display: flex; overflow-x: auto; gap: 16px; padding: 10px;">
+  <img src="./Screenshots/homepage-screenshot.png" alt="Homepage" width="400" style="flex: 0 0 auto; border-radius: 8px;" />
+  <img src="./Screenshots/about-screenshot.png" alt="About" width="400" style="flex: 0 0 auto; border-radius: 8px;" />
+  <img src="./Screenshots/projects-screenshot.png" alt="Projects" width="400" style="flex: 0 0 auto; border-radius: 8px;" />
+  <img src="./Screenshots/skills-screenshot.png" alt="Skills" width="400" style="flex: 0 0 auto; border-radius: 8px;" />
+  <img src="./Screenshots/contact-screenshot.png" alt="Contact" width="400" style="flex: 0 0 auto; border-radius: 8px;" />
+</div>
+
 
 ---
 
