@@ -17,12 +17,55 @@ This is my personal developer portfolio website, built with **HTML**, **CSS**, a
 
 ## 📸 Preview
 
-<div style="display: flex; overflow-x: auto; gap: 16px; padding: 10px;">
-  <img src="./Screenshots/homepage-screenshot.png" alt="Homepage" width="400" style="flex: 0 0 auto; border-radius: 8px;" />
-  <img src="./Screenshots/about-screenshot.png" alt="About" width="400" style="flex: 0 0 auto; border-radius: 8px;" />
-  <img src="./Screenshots/projects-screenshot.png" alt="Projects" width="400" style="flex: 0 0 auto; border-radius: 8px;" />
-  <img src="./Screenshots/skills-screenshot.png" alt="Skills" width="400" style="flex: 0 0 auto; border-radius: 8px;" />
-  <img src="./Screenshots/contact-screenshot.png" alt="Contact" width="400" style="flex: 0 0 auto; border-radius: 8px;" />
+<style>
+  .screenshot-gallery {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    padding: 10px;
+  }
+
+  .screenshot-gallery img {
+    flex: 0 0 auto;
+    width: 400px;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+
+  .screenshot-gallery img:hover {
+    transform: scale(1.03);
+  }
+
+  .screenshot-caption {
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+    margin-top: 4px;
+  }
+</style>
+
+<div class="screenshot-gallery">
+  <div>
+    <img src="./Screenshots/homepage-screenshot.png" alt="Homepage" title="Homepage" />
+    <div class="screenshot-caption">Homepage</div>
+  </div>
+  <div>
+    <img src="./Screenshots/about-screenshot.png" alt="About" title="About Page" />
+    <div class="screenshot-caption">About Page</div>
+  </div>
+  <div>
+    <img src="./Screenshots/projects-screenshot.png" alt="Projects" title="Projects" />
+    <div class="screenshot-caption">Projects</div>
+  </div>
+  <div>
+    <img src="./Screenshots/skills-screenshot.png" alt="Skills" title="Skills" />
+    <div class="screenshot-caption">Skills</div>
+  </div>
+  <div>
+    <img src="./Screenshots/contact-screenshot.png" alt="Contact" title="Contact" />
+    <div class="screenshot-caption">Contact</div>
+  </div>
 </div>
 
 
