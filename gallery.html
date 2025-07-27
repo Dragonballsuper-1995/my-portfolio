@@ -2,23 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Amazon-style Hover Zoom</title>
+  <title>Amazon-style Screenshot Zoom</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #f9f9f9;
       color: #111;
-      text-align: center;
       padding: 2rem;
+      text-align: center;
     }
 
     h1 {
       margin-bottom: 2rem;
     }
 
-    .container {
+    .viewer {
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .main-display {
+      display: flex;
+      flex-direction: row;
       justify-content: center;
       gap: 40px;
       flex-wrap: wrap;
@@ -47,12 +55,30 @@
       background-size: 200% 200%;
     }
 
+    .thumbnails {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .thumbnails img {
+      width: 80px;
+      height: auto;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .thumbnails img.active {
+      border-color: #007bff;
+    }
+
     @media (max-width: 900px) {
-      .container {
+      .main-display {
         flex-direction: column;
         align-items: center;
       }
-
       .zoom-box {
         width: 90vw;
         height: 90vw;
@@ -61,36 +87,54 @@
   </style>
 </head>
 <body>
-  <h1>📸 Amazon-style Hover Zoom</h1>
+  <h1>📸 Portfolio Screenshot Gallery – Amazon-style Zoom</h1>
 
-  <div class="container">
-    <div class="img-wrapper" id="imageWrapper">
-      <img id="sourceImage" src="./Screenshots/homepage-screenshot.png" alt="Zoom Image" />
+  <div class="viewer">
+    <div class="main-display">
+      <div class="img-wrapper" id="imageWrapper">
+        <img id="mainImage" src="./Screenshots/homepage-screenshot.png" alt="Main Screenshot" />
+      </div>
+      <div class="zoom-box" id="zoomBox"></div>
     </div>
-    <div class="zoom-box" id="zoomBox"></div>
+
+    <div class="thumbnails">
+      <img src="./Screenshots/homepage-screenshot.png" alt="Homepage" onclick="switchImage(this)" class="active" />
+      <img src="./Screenshots/about-screenshot.png" alt="About" onclick="switchImage(this)" />
+      <img src="./Screenshots/projects-screenshot.png" alt="Projects" onclick="switchImage(this)" />
+      <img src="./Screenshots/skills-screenshot.png" alt="Skills" onclick="switchImage(this)" />
+      <img src="./Screenshots/contact-screenshot.png" alt="Contact" onclick="switchImage(this)" />
+    </div>
   </div>
 
   <script>
-    const imageWrapper = document.getElementById('imageWrapper');
-    const image = document.getElementById('sourceImage');
-    const zoomBox = document.getElementById('zoomBox');
+    const mainImage = document.getElementById("mainImage");
+    const imageWrapper = document.getElementById("imageWrapper");
+    const zoomBox = document.getElementById("zoomBox");
+    const thumbnails = document.querySelectorAll(".thumbnails img");
 
-    imageWrapper.addEventListener('mousemove', function (e) {
-      const rect = image.getBoundingClientRect();
+    imageWrapper.addEventListener("mousemove", function (e) {
+      const rect = mainImage.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
       const xPercent = (x / rect.width) * 100;
       const yPercent = (y / rect.height) * 100;
 
-      zoomBox.style.display = 'block';
-      zoomBox.style.backgroundImage = `url(${image.src})`;
+      zoomBox.style.display = "block";
+      zoomBox.style.backgroundImage = `url(${mainImage.src})`;
       zoomBox.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
     });
 
-    imageWrapper.addEventListener('mouseleave', function () {
-      zoomBox.style.display = 'none';
+    imageWrapper.addEventListener("mouseleave", function () {
+      zoomBox.style.display = "none";
     });
+
+    function switchImage(thumb) {
+      thumbnails.forEach(t => t.classList.remove("active"));
+      thumb.classList.add("active");
+      mainImage.src = thumb.src;
+      zoomBox.style.backgroundImage = `url(${thumb.src})`;
+    }
   </script>
 </body>
 </html>
