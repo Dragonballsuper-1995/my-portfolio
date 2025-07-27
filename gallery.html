@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Screenshot Gallery</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .gallery-item {
+      transition: transform 0.3s ease;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05);
+    }
+
+    .gallery-item img {
+      width: 400px;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .caption {
+      margin-top: 0.5rem;
+      font-size: 14px;
+      color: #555;
+    }
+
+    @media (max-width: 500px) {
+      .gallery-item img {
+        width: 90vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>📸 Portfolio Screenshot Gallery</h1>
+  <div class="gallery">
+    <div class="gallery-item">
+      <img src="./Screenshots/homepage-screenshot.png" alt="Homepage">
+      <div class="caption">Homepage</div>
+    </div>
+    <div class="gallery-item">
+      <img src="./Screenshots/about-screenshot.png" alt="About Page">
+      <div class="caption">About Page</div>
+    </div>
+    <div class="gallery-item">
+      <img src="./Screenshots/projects-screenshot.png" alt="Projects">
+      <div class="caption">Projects</div>
+    </div>
+    <div class="gallery-item">
+      <img src="./Screenshots/skills-screenshot.png" alt="Skills">
+      <div class="caption">Skills</div>
+    </div>
+    <div class="gallery-item">
+      <img src="./Screenshots/contact-screenshot.png" alt="Contact">
+      <div class="caption">Contact</div>
+    </div>
+  </div>
+</body>
+</html>
