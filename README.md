@@ -15,19 +15,22 @@ This is my personal developer portfolio website, built with **HTML**, **CSS**, a
 
 ---
 
-## 📸 Preview
+<details>
+  <summary>📸 Click to view website screenshots</summary>
 
-| Homepage | About |
-|----------|-------|
-| ![](./Screenshots/homepage-screenshot.png) | ![](./Screenshots/about-screenshot.png) |
+  | Homepage | About |
+  |----------|-------|
+  | ![](./Screenshots/homepage-screenshot.png) | ![](./Screenshots/about-screenshot.png) |
 
-| Projects | Skills |
-|----------|--------|
-| ![](./Screenshots/projects-screenshot.png) | ![](./Screenshots/skills-screenshot.png) |
+  | Projects | Skills |
+  |----------|--------|
+  | ![](./Screenshots/projects-screenshot.png) | ![](./Screenshots/skills-screenshot.png) |
 
-| Contact |
-|---------|
-| ![](./Screenshots/contact-screenshot.png) |
+  | Contact |
+  |---------|
+  | ![](./Screenshots/contact-screenshot.png) |
+
+</details>
 
 
 ---
