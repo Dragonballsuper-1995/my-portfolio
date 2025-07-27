@@ -14,16 +14,25 @@ This is my personal developer portfolio website, built with **HTML**, **CSS**, a
 🔗 [Visit Portfolio](https://dragonballsuper-1995.github.io/my-portfolio/)
 
 ---
-
 ## 📸 Preview
 
-<div style="display: flex; overflow-x: auto; gap: 16px; padding: 10px;">
-  <img src="./Screenshots/homepage-screenshot.png" alt="Homepage" width="400" style="flex: 0 0 auto; border-radius: 8px;" />
-  <img src="./Screenshots/about-screenshot.png" alt="About" width="400" style="flex: 0 0 auto; border-radius: 8px;" />
-  <img src="./Screenshots/projects-screenshot.png" alt="Projects" width="400" style="flex: 0 0 auto; border-radius: 8px;" />
-  <img src="./Screenshots/skills-screenshot.png" alt="Skills" width="400" style="flex: 0 0 auto; border-radius: 8px;" />
-  <img src="./Screenshots/contact-screenshot.png" alt="Contact" width="400" style="flex: 0 0 auto; border-radius: 8px;" />
-</div>
+<details><details>
+<summary>📸 Click to view screenshots</summary>
+
+| Homepage | About |
+|----------|-------|
+| ![](./Screenshots/homepage-screenshot.png) | ![](./Screenshots/about-screenshot.png) |
+
+| Projects | Skills |
+|----------|--------|
+| ![](./Screenshots/projects-screenshot.png) | ![](./Screenshots/skills-screenshot.png) |
+
+| Contact |
+|---------|
+| ![](./Screenshots/contact-screenshot.png) |
+
+</details>
+
 
 
 ---
