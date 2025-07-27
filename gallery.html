@@ -61,7 +61,7 @@
     }
 
     .gallery-item:hover img {
-      transform: scale(2);
+      transform: scale(1.1);
     }
 
     .gallery-item img {
@@ -78,13 +78,15 @@
       left: 0;
       width: 100%;
       padding: 10px;
-      background: rgba(0, 0, 0, 0.7);
       color: #fff;
       font-size: 15px;
       font-weight: bold;
       text-align: center;
       opacity: 0;
       transition: opacity 0.3s ease;
+      background-color: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px); /* for Safari */
     }
 
     .gallery-item:hover .caption {
@@ -105,7 +107,7 @@
     @media (prefers-color-scheme: dark) {
       body:not(.light) {
         background-color: #121212;
-        color: #000000;
+        color: #f0f0f0;
       }
 
       .toggle-btn {
@@ -113,7 +115,9 @@
       }
 
       .caption {
-        background: rgb(0, 0, 0);
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
       }
     }
 
@@ -167,7 +171,6 @@
       document.body.classList.toggle('light');
     }
 
-    // Load system theme on first load
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       document.body.classList.add('dark');
     }
