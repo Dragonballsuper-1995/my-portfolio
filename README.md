@@ -17,28 +17,17 @@ This is my personal developer portfolio website, built with **HTML**, **CSS**, a
 
 ## 📸 Preview
 
-<div style="display: flex; overflow-x: auto; padding: 10px; gap: 16px;">
-  <div style="flex: 0 0 auto; text-align: center;">
-    <img src="./Screenshots/homepage-screenshot.png" alt="Homepage" width="400" style="border-radius: 8px;" />
-    <div style="font-size: 14px; color: #555;">Homepage</div>
-  </div>
-  <div style="flex: 0 0 auto; text-align: center;">
-    <img src="./Screenshots/about-screenshot.png" alt="About" width="400" style="border-radius: 8px;" />
-    <div style="font-size: 14px; color: #555;">About Page</div>
-  </div>
-  <div style="flex: 0 0 auto; text-align: center;">
-    <img src="./Screenshots/projects-screenshot.png" alt="Projects" width="400" style="border-radius: 8px;" />
-    <div style="font-size: 14px; color: #555;">Projects</div>
-  </div>
-  <div style="flex: 0 0 auto; text-align: center;">
-    <img src="./Screenshots/skills-screenshot.png" alt="Skills" width="400" style="border-radius: 8px;" />
-    <div style="font-size: 14px; color: #555;">Skills</div>
-  </div>
-  <div style="flex: 0 0 auto; text-align: center;">
-    <img src="./Screenshots/contact-screenshot.png" alt="Contact" width="400" style="border-radius: 8px;" />
-    <div style="font-size: 14px; color: #555;">Contact</div>
-  </div>
-</div>
+| Homepage | About |
+|----------|-------|
+| ![](./Screenshots/homepage-screenshot.png) | ![](./Screenshots/about-screenshot.png) |
+
+| Projects | Skills |
+|----------|--------|
+| ![](./Screenshots/projects-screenshot.png) | ![](./Screenshots/skills-screenshot.png) |
+
+| Contact |
+|---------|
+| ![](./Screenshots/contact-screenshot.png) |
 
 
 ---
