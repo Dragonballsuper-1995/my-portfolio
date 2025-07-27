@@ -17,12 +17,17 @@ This is my personal developer portfolio website, built with **HTML**, **CSS**, a
 
 ## 📸 Preview
 
-<!-- ![Portfolio Screenshot](./Screenshots/homepage-screenshot.png.png)
-![Portfolio Screenshot](./Screenshots/about-screenshot.png)
-![Portfolio Screenshot](./Screenshots/projects-screenshot.png)
-![Portfolio Screenshot](./Screenshots/skills-screenshot.png)
-![Portfolio Screenshot](./Screenshots/contact-screenshot.png) -->
-![Portfolio Screenshot](./Screenshots/full.png)
+<p align="center">
+  <img src="./Screenshots/homepage-screenshot.png" alt="Homepage" width="400"/>
+  <img src="./Screenshots/about-screenshot.png" alt="About Page" width="400"/>
+</p>
+<p align="center">
+  <img src="./Screenshots/projects-screenshot.png" alt="Projects Page" width="400"/>
+  <img src="./Screenshots/skills-screenshot.png" alt="Skills Page" width="400"/>
+</p>
+<p align="center">
+  <img src="./Screenshots/contact-screenshot.png" alt="Contact Page" width="400"/>
+</p>
 
 ---
 
