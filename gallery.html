@@ -5,12 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Screenshot Gallery</title>
   <style>
+    :root {
+      color-scheme: light dark;
+    }
+
     body {
       font-family: Arial, sans-serif;
       background: #f9f9f9;
+      color: #000;
       margin: 0;
       padding: 2rem;
       text-align: center;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #121212;
+        color: #f0f0f0;
+      }
+
+      .caption {
+        color: #ccc;
+      }
     }
 
     h1 {
@@ -25,14 +41,11 @@
     }
 
     .gallery-item {
-      transition: transform 0.3s ease;
+      position: relative;
       border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-    .gallery-item:hover {
-      transform: scale(1.05);
+      cursor: pointer;
     }
 
     .gallery-item img {
@@ -40,12 +53,37 @@
       height: auto;
       display: block;
       border-radius: 8px;
+      transition: transform 0.3s ease;
     }
 
     .caption {
       margin-top: 0.5rem;
       font-size: 14px;
       color: #555;
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .lightbox:target {
+      display: flex;
     }
 
     @media (max-width: 500px) {
@@ -59,25 +97,42 @@
   <h1>📸 Portfolio Screenshot Gallery</h1>
   <div class="gallery">
     <div class="gallery-item">
-      <img src="./Screenshots/homepage-screenshot.png" alt="Homepage">
+      <a href="#img1"><img src="./Screenshots/homepage-screenshot.png" alt="Homepage"></a>
       <div class="caption">Homepage</div>
     </div>
     <div class="gallery-item">
-      <img src="./Screenshots/about-screenshot.png" alt="About Page">
+      <a href="#img2"><img src="./Screenshots/about-screenshot.png" alt="About Page"></a>
       <div class="caption">About Page</div>
     </div>
     <div class="gallery-item">
-      <img src="./Screenshots/projects-screenshot.png" alt="Projects">
+      <a href="#img3"><img src="./Screenshots/projects-screenshot.png" alt="Projects"></a>
       <div class="caption">Projects</div>
     </div>
     <div class="gallery-item">
-      <img src="./Screenshots/skills-screenshot.png" alt="Skills">
+      <a href="#img4"><img src="./Screenshots/skills-screenshot.png" alt="Skills"></a>
       <div class="caption">Skills</div>
     </div>
     <div class="gallery-item">
-      <img src="./Screenshots/contact-screenshot.png" alt="Contact">
+      <a href="#img5"><img src="./Screenshots/contact-screenshot.png" alt="Contact"></a>
       <div class="caption">Contact</div>
     </div>
+  </div>
+
+  <!-- Lightbox Fullscreen Views -->
+  <div id="img1" class="lightbox" onclick="location.href='#'">
+    <img src="./Screenshots/homepage-screenshot.png" alt="Homepage Full">
+  </div>
+  <div id="img2" class="lightbox" onclick="location.href='#'">
+    <img src="./Screenshots/about-screenshot.png" alt="About Full">
+  </div>
+  <div id="img3" class="lightbox" onclick="location.href='#'">
+    <img src="./Screenshots/projects-screenshot.png" alt="Projects Full">
+  </div>
+  <div id="img4" class="lightbox" onclick="location.href='#'">
+    <img src="./Screenshots/skills-screenshot.png" alt="Skills Full">
+  </div>
+  <div id="img5" class="lightbox" onclick="location.href='#'">
+    <img src="./Screenshots/contact-screenshot.png" alt="Contact Full">
   </div>
 </body>
 </html>
