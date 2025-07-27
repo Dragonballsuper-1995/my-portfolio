@@ -1,3 +1,4 @@
+
 # 🧠 Sujal Sanjay Chhajed – Portfolio Website
 
 ![MIT License](https://img.shields.io/badge/License-MIT-green.svg)
@@ -16,7 +17,7 @@ This is my personal developer portfolio website, built with **HTML**, **CSS**, a
 
 ## 📸 Preview
 
-![Portfolio Screenshot](./homepage-screenshot.png)
+![Portfolio Screenshot](./f0117f3b-2288-446e-8f39-329842b22989.png)
 
 ---
 
@@ -44,12 +45,17 @@ This is my personal developer portfolio website, built with **HTML**, **CSS**, a
 
 ## 🧩 Folder Structure
 
+```
+
 my-portfolio/
 │
-├── index.html # Main website content
-├── style.css # Additional styles (minimal)
-├── LICENSE # MIT License
-└── README.md # You're reading it!
+├── index.html          # Main website content
+├── style.css           # Additional styles (minimal)
+├── LICENSE             # MIT License
+├── README.md           # You're reading it!
+└── screenshot.png      # Preview image
+
+````
 
 ---
 
@@ -59,17 +65,26 @@ my-portfolio/
 git clone https://github.com/Dragonballsuper-1995/my-portfolio.git
 cd my-portfolio
 open index.html  # Or open with your browser
+````
 
-Sujal Sanjay Chhajed
+---
 
-Email: sujalchhajed925@gmail.com
+## 🙋‍♂️ Contact
 
-GitHub: @Dragonballsuper-1995
+**Sujal Sanjay Chhajed**
 
-Twitter: @sujal_chhajed
+* 📧 Email: [sujalchhajed925@gmail.com](mailto:sujalchhajed925@gmail.com)
+* 🐙 GitHub: [@Dragonballsuper-1995](https://github.com/Dragonballsuper-1995)
+* 🐦 Twitter: [@sujal\_chhajed](https://x.com/sujal_chhajed)
+* 💼 LinkedIn: [linkedin.com/in/sujalchhajed925](https://linkedin.com/in/sujalchhajed925)
+* 📸 Instagram: [@sujalchhajed925](https://instagram.com/sujalchhajed925)
 
-LinkedIn: linkedin.com/in/sujalchhajed925
+---
 
-Instagram: @sujalchhajed925
+## 📄 License
 
-This project is licensed under the MIT License — see the LICENSE file for details.
+This project is licensed under the **MIT License** — see the [LICENSE](./LICENSE) file for details.
+
+````
+
+---
