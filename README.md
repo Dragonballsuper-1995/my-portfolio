@@ -17,7 +17,12 @@ This is my personal developer portfolio website, built with **HTML**, **CSS**, a
 
 ## 📸 Preview
 
-![Portfolio Screenshot](./f0117f3b-2288-446e-8f39-329842b22989.png)
+<!-- ![Portfolio Screenshot](./Screenshots/homepage-screenshot.png.png)
+![Portfolio Screenshot](./Screenshots/about-screenshot.png)
+![Portfolio Screenshot](./Screenshots/projects-screenshot.png)
+![Portfolio Screenshot](./Screenshots/skills-screenshot.png)
+![Portfolio Screenshot](./Screenshots/contact-screenshot.png) -->
+![Portfolio Screenshot](./Screenshots/full.png)
 
 ---
 
