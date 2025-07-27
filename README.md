@@ -1,10 +1,12 @@
 ---
-title: Sujal Sanjay Chhajed Portfolio
-emoji: 😻
+title: sujal-sanjay-chhajed-portfolio
+emoji: 🐳
 colorFrom: red
-colorTo: pink
+colorTo: red
 sdk: static
 pinned: false
+tags:
+  - deepsite
 ---
 
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference

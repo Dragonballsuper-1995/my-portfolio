@@ -1,19 +1,668 @@
-<!doctype html>
-<html>
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<title>My static Space</title>
-		<link rel="stylesheet" href="style.css" />
-	</head>
-	<body>
-		<div class="card">
-			<h1>Welcome to your static Space!</h1>
-			<p>You can modify this app directly by editing <i>index.html</i> in the Files and versions tab.</p>
-			<p>
-				Also don't forget to check the
-				<a href="https://huggingface.co/docs/hub/spaces" target="_blank">Spaces documentation</a>.
-			</p>
-		</div>
-	</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sujal Chhajed - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#7c3aed',
+                        dark: '#0f172a',
+                        light: '#f1f5f9',
+                        accent: '#f43f5e'
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                        'space': ['Space Grotesk', 'sans-serif']
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/css">
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f1f5f9;
+            scroll-behavior: smooth;
+        }
+        .hero-pattern {
+            background: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.1) 0%, rgba(124, 58, 237, 0.05) 90%);
+        }
+        .project-card {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.2), 0 10px 10px -5px rgba(37, 99, 235, 0.1);
+            border-color: rgba(37, 99, 235, 0.3);
+        }
+        .social-icon {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(15, 23, 42, 0.7);
+        }
+        .social-icon:hover {
+            transform: translateY(-5px);
+            background: rgba(37, 99, 235, 0.3);
+            border-color: rgba(37, 99, 235, 0.5);
+        }
+        .tech-badge {
+            background: rgba(124, 58, 237, 0.2);
+            color: #c4b5fd;
+        }
+        .section-title {
+            position: relative;
+            display: inline-block;
+        }
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 70%;
+            height: 4px;
+            background: linear-gradient(90deg, #2563eb, #7c3aed);
+            border-radius: 2px;
+        }
+        .blob {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            border-radius: 41% 59% 70% 30% / 30% 43% 57% 70%;
+            opacity: 0.2;
+            filter: blur(60px);
+            z-index: -1;
+            animation: float 12s ease-in-out infinite;
+        }
+        .blob:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            width: 400px;
+            height: 400px;
+            animation-duration: 15s;
+        }
+        .blob:nth-child(2) {
+            top: 60%;
+            right: 10%;
+            animation-duration: 12s;
+        }
+        .blob:nth-child(3) {
+            bottom: 20%;
+            left: 30%;
+            width: 250px;
+            height: 250px;
+            animation-duration: 10s;
+        }
+        .skill-bar {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2563eb, #7c3aed);
+        }
+        .nav-link {
+            position: relative;
+        }
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #2563eb;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        .active-nav:after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+    <!-- Background blobs -->
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 py-4 px-6 backdrop-blur-md bg-dark/80">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold font-space text-white flex items-center">
+                <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">SUJAL</span>
+            </a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#hero" class="nav-link text-light active-nav">Home</a>
+                <a href="#about" class="nav-link text-light">About</a>
+                <a href="#projects" class="nav-link text-light">Projects</a>
+                <a href="#skills" class="nav-link text-light">Skills</a>
+                <a href="#contact" class="nav-link text-light">Contact</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-toggle" class="text-light focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-16 left-0 w-full bg-dark/95 backdrop-blur-lg py-4 px-6">
+            <div class="flex flex-col space-y-4">
+                <a href="#hero" class="nav-link text-light">Home</a>
+                <a href="#about" class="nav-link text-light">About</a>
+                <a href="#projects" class="nav-link text-light">Projects</a>
+                <a href="#skills" class="nav-link text-light">Skills</a>
+                <a href="#contact" class="nav-link text-light">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center pt-16 pb-20 hero-pattern">
+        <div class="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center justify-between">
+            <div class="md:w-1/2 mt-16 md:mt-0">
+                <h3 class="text-secondary font-semibold mb-2">Hello, I'm</h3>
+                <h1 class="text-5xl md:text-7xl font-bold font-space mb-4">
+                    <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Sujal Chhajed</span>
+                </h1>
+                <h2 class="text-2xl md:text-3xl font-medium text-light mb-6">
+                    AI Developer & Software Engineer
+                </h2>
+                <p class="text-lg text-slate-300 mb-10 max-w-xl">
+                    Passionate about building intelligent solutions that solve real-world problems. Combining cutting-edge AI with robust engineering to create impactful technologies.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#projects" class="px-8 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium hover:from-blue-600 hover:to-purple-600 transition-all shadow-lg shadow-blue-500/20">
+                        View Projects
+                    </a>
+                    <a href="#contact" class="px-8 py-3 border-2 border-primary text-white rounded-lg font-medium hover:bg-primary/10 transition-all">
+                        Contact Me
+                    </a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center mt-16 md:mt-0">
+                <div class="relative">
+                    <div class="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-primary/30 relative">
+                        <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10"></div>
+                        <div class="absolute inset-0 flex items-center justify-center animate-pulse-slow">
+                            <div class="rounded-full w-48 h-48 bg-gradient-to-r from-primary/20 to-secondary/20"></div>
+                        </div>
+                    </div>
+                    <div class="absolute -top-4 -right-4 bg-dark border-2 border-secondary rounded-xl px-4 py-2 rotate-6">
+                        <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-bold">AI Developer</span>
+                    </div>
+                    <div class="absolute -bottom-4 -left-4 bg-dark border-2 border-primary rounded-xl px-4 py-2 -rotate-6">
+                        <span class="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent font-bold">ML Engineer</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col items-center mb-16">
+                <h2 class="text-4xl font-bold font-space text-center mb-4 section-title">About Me</h2>
+                <p class="text-slate-300 max-w-2xl text-center">Get to know more about me, my background, and my passion for technology</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-primary">Who am I?</h3>
+                    <p class="text-slate-300 mb-6">
+                        I'm Sujal Sanjay Chhajed, a passionate developer and AI enthusiast with a strong foundation in machine learning and software engineering. My journey in technology began at a young age, and I've been constantly exploring new frontiers in AI and web development.
+                    </p>
+                    <p class="text-slate-300 mb-8">
+                        My approach combines technical expertise with creative problem-solving. I thrive on building intelligent systems that bridge the gap between complex technology and practical user applications.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div class="p-5 rounded-xl bg-slate-800/50 backdrop-blur-sm">
+                            <h4 class="font-bold text-lg mb-2 text-secondary">Education</h4>
+                            <p class="text-slate-300">Computer Science & Engineering</p>
+                            <p class="text-slate-400 text-sm">Currently pursuing my degree</p>
+                        </div>
+                        <div class="p-5 rounded-xl bg-slate-800/50 backdrop-blur-sm">
+                            <h4 class="font-bold text-lg mb-2 text-secondary">Experience</h4>
+                            <p class="text-slate-300">AI Projects & Research</p>
+                            <p class="text-slate-400 text-sm">Specialized in NLP and Log Analysis</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-3">
+                        <div class="tech-badge px-4 py-2 rounded-full text-sm font-medium">Machine Learning</div>
+                        <div class="tech-badge px-4 py-2 rounded-full text-sm font-medium">Natural Language Processing</div>
+                        <div class="tech-badge px-4 py-2 rounded-full text-sm font-medium">Web Development</div>
+                        <div class="tech-badge px-4 py-2 rounded-full text-sm font-medium">AI Integration</div>
+                    </div>
+                </div>
+                
+                <div class="space-y-8">
+                    <div class="p-6 rounded-xl bg-slate-800/50 backdrop-blur-sm">
+                        <h3 class="text-xl font-bold mb-4 text-primary">Contact Information</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                                    <i class="fas fa-envelope text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-slate-400 text-sm">Email</p>
+                                    <p class="text-light">sujalchhajed925@gmail.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                                    <i class="fas fa-phone text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-slate-400 text-sm">Phone</p>
+                                    <p class="text-light">+91 9307346453</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 rounded-xl bg-slate-800/50 backdrop-blur-sm">
+                        <h3 class="text-xl font-bold mb-4 text-primary">Connect With Me</h3>
+                        <div class="flex flex-wrap gap-4">
+                            <a href="https://www.linkedin.com/in/sujalchhajed925/" target="_blank" class="social-icon w-14 h-14 rounded-full flex items-center justify-center">
+                                <i class="fab fa-linkedin-in text-xl text-blue-400"></i>
+                            </a>
+                            <a href="https://github.com/Dragonballsuper-1995/" target="_blank" class="social-icon w-14 h-14 rounded-full flex items-center justify-center">
+                                <i class="fab fa-github text-xl text-white"></i>
+                            </a>
+                            <a href="https://x.com/sujal_chhajed" target="_blank" class="social-icon w-14 h-14 rounded-full flex items-center justify-center">
+                                <i class="fab fa-twitter text-xl text-sky-400"></i>
+                            </a>
+                            <a href="https://www.instagram.com/sujalchhajed925/" target="_blank" class="social-icon w-14 h-14 rounded-full flex items-center justify-center">
+                                <i class="fab fa-instagram text-xl text-pink-500"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col items-center mb-16">
+                <h2 class="text-4xl font-bold font-space text-center mb-4 section-title">Technical Skills</h2>
+                <p class="text-slate-300 max-w-2xl text-center">My technical expertise spans across AI development, machine learning, and web technologies</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div>
+                    <div class="mb-8">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium text-light">Machine Learning</span>
+                            <span class="font-medium text-primary">90%</span>
+                        </div>
+                        <div class="skill-bar h-2 rounded-full overflow-hidden">
+                            <div class="skill-fill w-[90%]"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium text-light">Natural Language Processing</span>
+                            <span class="font-medium text-primary">85%</span>
+                        </div>
+                        <div class="skill-bar h-2 rounded-full overflow-hidden">
+                            <div class="skill-fill w-[85%]"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium text-light">Python Programming</span>
+                            <span class="font-medium text-primary">95%</span>
+                        </div>
+                        <div class="skill-bar h-2 rounded-full overflow-hidden">
+                            <div class="skill-fill w-[95%]"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="mb-8">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium text-light">Web Development</span>
+                            <span class="font-medium text-primary">80%</span>
+                        </div>
+                        <div class="skill-bar h-2 rounded-full overflow-hidden">
+                            <div class="skill-fill w-[80%]"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium text-light">AI Model Deployment</span>
+                            <span class="font-medium text-primary">75%</span>
+                        </div>
+                        <div class="skill-bar h-2 rounded-full overflow-hidden">
+                            <div class="skill-fill w-[75%]"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium text-light">Data Analysis</span>
+                            <span class="font-medium text-primary">85%</span>
+                        </div>
+                        <div class="skill-bar h-2 rounded-full overflow-hidden">
+                            <div class="skill-fill w-[85%]"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-16">
+                <h3 class="text-2xl font-bold mb-8 text-center text-primary">Technologies I Work With</h3>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <div class="tech-badge px-5 py-3 rounded-lg flex items-center">
+                        <i class="fab fa-python text-xl mr-2 text-yellow-400"></i>
+                        <span>Python</span>
+                    </div>
+                    <div class="tech-badge px-5 py-3 rounded-lg flex items-center">
+                        <i class="fas fa-brain text-xl mr-2 text-purple-400"></i>
+                        <span>TensorFlow/PyTorch</span>
+                    </div>
+                    <div class="tech-badge px-5 py-3 rounded-lg flex items-center">
+                        <i class="fab fa-js text-xl mr-2 text-yellow-300"></i>
+                        <span>JavaScript</span>
+                    </div>
+                    <div class="tech-badge px-5 py-3 rounded-lg flex items-center">
+                        <i class="fab fa-html5 text-xl mr-2 text-orange-500"></i>
+                        <span>HTML/CSS</span>
+                    </div>
+                    <div class="tech-badge px-5 py-3 rounded-lg flex items-center">
+                        <i class="fas fa-database text-xl mr-2 text-blue-400"></i>
+                        <span>SQL</span>
+                    </div>
+                    <div class="tech-badge px-5 py-3 rounded-lg flex items-center">
+                        <i class="fab fa-git-alt text-xl mr-2 text-orange-600"></i>
+                        <span>Git</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col items-center mb-16">
+                <h2 class="text-4xl font-bold font-space text-center mb-4 section-title">Featured Projects</h2>
+                <p class="text-slate-300 max-w-2xl text-center">Explore my latest projects where I've applied AI and software engineering to solve complex problems</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card rounded-2xl overflow-hidden p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                            <i class="fab fa-youtube text-2xl text-red-500"></i>
+                        </div>
+                        <a href="https://github.com/Dragonballsuper-1995/yt-title-desc-generator" target="_blank" class="text-primary hover:text-blue-400">
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">YouTube Title & Description Generator</h3>
+                    <p class="text-slate-300 mb-6">
+                        AI-powered tool to automatically generate SEO-friendly YouTube titles, descriptions, hashtags, and tags from any video script or summary.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-sm">T5 Model</span>
+                        <span class="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-sm">BART</span>
+                        <span class="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-sm">RAKE Algorithm</span>
+                        <span class="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-sm">Gradio UI</span>
+                    </div>
+                    <a href="https://github.com/Dragonballsuper-1995/yt-title-desc-generator" target="_blank" class="text-primary font-medium flex items-center">
+                        View on GitHub
+                        <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </a>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="project-card rounded-2xl overflow-hidden p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-2xl text-purple-500"></i>
+                        </div>
+                        <a href="https://github.com/Ayushs135/AnomLogBert" target="_blank" class="text-primary hover:text-blue-400">
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">AnomLogBERT</h3>
+                    <p class="text-slate-300 mb-6">
+                        Deep learning framework for automated anomaly detection in system log files using transformer-based models.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="px-3 py-1 bg-purple-500/10 text-purple-400 rounded-full text-sm">all-MiniLM-L12-v2</span>
+                        <span class="px-3 py-1 bg-purple-500/10 text-purple-400 rounded-full text-sm">Transformers</span>
+                        <span class="px-3 py-1 bg-purple-500/10 text-purple-400 rounded-full text-sm">Log Analysis</span>
+                        <span class="px-3 py-1 bg-purple-500/10 text-purple-400 rounded-full text-sm">Anomaly Detection</span>
+                    </div>
+                    <a href="https://github.com/Ayushs135/AnomLogBert" target="_blank" class="text-primary font-medium flex items-center">
+                        View on GitHub
+                        <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </a>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="project-card rounded-2xl overflow-hidden p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-green-500/10 flex items-center justify-center">
+                            <i class="fas fa-globe-asia text-2xl text-green-500"></i>
+                        </div>
+                        <a href="https://github.com/Siddharth-Y26/Urban-Escapade" target="_blank" class="text-primary hover:text-blue-400">
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Urban Escapade</h3>
+                    <p class="text-slate-300 mb-6">
+                        Interactive website showcasing India's diverse states with cultural, regional, and geographical information.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="px-3 py-1 bg-green-500/10 text-green-400 rounded-full text-sm">HTML5</span>
+                        <span class="px-3 py-1 bg-green-500/10 text-green-400 rounded-full text-sm">CSS3</span>
+                        <span class="px-3 py-1 bg-green-500/10 text-green-400 rounded-full text-sm">JavaScript</span>
+                        <span class="px-3 py-1 bg-green-500/10 text-green-400 rounded-full text-sm">Responsive Design</span>
+                    </div>
+                    <a href="https://github.com/Siddharth-Y26/Urban-Escapade" target="_blank" class="text-primary font-medium flex items-center">
+                        View on GitHub
+                        <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col items-center mb-16">
+                <h2 class="text-4xl font-bold font-space text-center mb-4 section-title">Get In Touch</h2>
+                <p class="text-slate-300 max-w-2xl text-center">Have a project in mind or want to discuss AI opportunities? Feel free to reach out!</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <div class="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8">
+                        <h3 class="text-2xl font-bold mb-6 text-primary">Contact Information</h3>
+                        <div class="space-y-6">
+                            <div class="flex">
+                                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                                    <i class="fas fa-envelope text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-light">Email</h4>
+                                    <p class="text-slate-300">sujalchhajed925@gmail.com</p>
+                                </div>
+                            </div>
+                            <div class="flex">
+                                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                                    <i class="fas fa-phone text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-light">Phone</h4>
+                                    <p class="text-slate-300">+91 9307346453</p>
+                                </div>
+                            </div>
+                            <div class="flex">
+                                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                                    <i class="fas fa-map-marker-alt text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-light">Location</h4>
+                                    <p class="text-slate-300">India</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-10">
+                            <h3 class="text-xl font-bold mb-4 text-primary">Follow Me</h3>
+                            <div class="flex space-x-4">
+                                <a href="https://www.linkedin.com/in/sujalchhajed925/" target="_blank" class="social-icon w-12 h-12 rounded-full flex items-center justify-center">
+                                    <i class="fab fa-linkedin-in text-lg text-blue-400"></i>
+                                </a>
+                                <a href="https://github.com/Dragonballsuper-1995/" target="_blank" class="social-icon w-12 h-12 rounded-full flex items-center justify-center">
+                                    <i class="fab fa-github text-lg text-white"></i>
+                                </a>
+                                <a href="https://x.com/sujal_chhajed" target="_blank" class="social-icon w-12 h-12 rounded-full flex items-center justify-center">
+                                    <i class="fab fa-twitter text-lg text-sky-400"></i>
+                                </a>
+                                <a href="https://www.instagram.com/sujalchhajed925/" target="_blank" class="social-icon w-12 h-12 rounded-full flex items-center justify-center">
+                                    <i class="fab fa-instagram text-lg text-pink-500"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8">
+                        <h3 class="text-2xl font-bold mb-6 text-primary">Send Me a Message</h3>
+                        <form>
+                            <div class="mb-6">
+                                <label class="block text-slate-300 mb-2">Your Name</label>
+                                <input type="text" class="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-white">
+                            </div>
+                            <div class="mb-6">
+                                <label class="block text-slate-300 mb-2">Your Email</label>
+                                <input type="email" class="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-white">
+                            </div>
+                            <div class="mb-6">
+                                <label class="block text-slate-300 mb-2">Message</label>
+                                <textarea rows="5" class="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-white"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-gradient-to-r from-primary to-secondary text-white font-medium py-3 rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 border-t border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <a href="#" class="text-2xl font-bold font-space text-white">
+                        <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">SUJAL</span>
+                    </a>
+                    <p class="text-slate-400 mt-2">AI Developer & Software Engineer</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="https://www.linkedin.com/in/sujalchhajed925/" target="_blank" class="text-slate-400 hover:text-blue-400">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://github.com/Dragonballsuper-1995/" target="_blank" class="text-slate-400 hover:text-white">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://x.com/sujal_chhajed" target="_blank" class="text-slate-400 hover:text-sky-400">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.instagram.com/sujalchhajed925/" target="_blank" class="text-slate-400 hover:text-pink-500">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-slate-700/30 text-center text-slate-500">
+                <p>&copy; 2023 Sujal Sanjay Chhajed. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when clicking a link
+        const mobileLinks = document.querySelectorAll('#mobile-menu a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        
+        // Add active class to navigation links based on scroll position
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if(pageYOffset >= (sectionTop - 300)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active-nav');
+                if(link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active-nav');
+                }
+            });
+        });
+    </script>
+<p style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">Made with <img src="https://enzostvs-deepsite.hf.space/logo.svg" alt="DeepSite Logo" style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a href="https://enzostvs-deepsite.hf.space" style="color: #fff;text-decoration: underline;" target="_blank" >DeepSite</a> - 🧬 <a href="https://enzostvs-deepsite.hf.space?remix=SujalChhajed925/sujal-sanjay-chhajed-portfolio" style="color: #fff;text-decoration: underline;" target="_blank" >Remix</a></p></body>
 </html>
