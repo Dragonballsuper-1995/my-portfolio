@@ -14,8 +14,9 @@ This is my personal developer portfolio website, built with **HTML**, **CSS**, a
 🔗 [Visit Portfolio](https://dragonballsuper-1995.github.io/my-portfolio/)
 
 ---
+## 📸 Preview
 
-<details>
+<!-- <details>
   <summary>📸 Click to view website screenshots</summary>
 
   | Homepage | About |
@@ -30,7 +31,8 @@ This is my personal developer portfolio website, built with **HTML**, **CSS**, a
   |---------|
   | ![](./Screenshots/contact-screenshot.png) |
 
-</details>
+</details> -->
+![Portfolio Screenshot](./Screenshots/full.png)
 
 
 ---
