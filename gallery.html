@@ -1,37 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Screenshot Gallery</title>
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
     :root {
       color-scheme: light dark;
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      color: #000;
       margin: 0;
       padding: 2rem;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #111;
       text-align: center;
     }
 
     @media (prefers-color-scheme: dark) {
       body {
-        background: #121212;
+        background-color: #121212;
         color: #f0f0f0;
       }
-
       .caption {
         color: #ccc;
       }
     }
 
     h1 {
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
     }
 
     .gallery {
@@ -42,23 +41,24 @@
     }
 
     .gallery-item {
-      position: relative;
-      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       overflow: hidden;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      cursor: pointer;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       transition: transform 0.3s ease;
     }
 
-    .gallery-item:hover {
+    .gallery-item:hover img {
       transform: scale(1.05);
     }
 
     .gallery-item img {
       width: 400px;
       height: auto;
-      display: block;
-      border-radius: 8px;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
     }
 
     .caption {
@@ -79,31 +79,31 @@
   <div class="gallery">
     <div class="gallery-item">
       <a href="./Screenshots/homepage-screenshot.png" target="_blank">
-        <img src="./Screenshots/homepage-screenshot.png" alt="Homepage">
+        <img src="./Screenshots/homepage-screenshot.png" alt="Homepage" />
       </a>
       <div class="caption">Homepage</div>
     </div>
     <div class="gallery-item">
       <a href="./Screenshots/about-screenshot.png" target="_blank">
-        <img src="./Screenshots/about-screenshot.png" alt="About Page">
+        <img src="./Screenshots/about-screenshot.png" alt="About Page" />
       </a>
       <div class="caption">About Page</div>
     </div>
     <div class="gallery-item">
       <a href="./Screenshots/projects-screenshot.png" target="_blank">
-        <img src="./Screenshots/projects-screenshot.png" alt="Projects">
+        <img src="./Screenshots/projects-screenshot.png" alt="Projects" />
       </a>
       <div class="caption">Projects</div>
     </div>
     <div class="gallery-item">
       <a href="./Screenshots/skills-screenshot.png" target="_blank">
-        <img src="./Screenshots/skills-screenshot.png" alt="Skills">
+        <img src="./Screenshots/skills-screenshot.png" alt="Skills" />
       </a>
       <div class="caption">Skills</div>
     </div>
     <div class="gallery-item">
       <a href="./Screenshots/contact-screenshot.png" target="_blank">
-        <img src="./Screenshots/contact-screenshot.png" alt="Contact">
+        <img src="./Screenshots/contact-screenshot.png" alt="Contact" />
       </a>
       <div class="caption">Contact</div>
     </div>
