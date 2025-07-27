@@ -1,265 +1,464 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Amazon-style Screenshot Zoom</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Website Screenshot Gallery</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-      color: #fff;
-      padding: 2rem;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      color: #e0e0e0;
+      line-height: 1.6;
       min-height: 100vh;
-      text-align: center;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
+      width: 95%;
+      max-width: 1400px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #3a506b;
     }
 
     h1 {
-      margin-bottom: 2rem;
       font-size: 2.5rem;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(90deg, #ff9900, #ffcc00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      letter-spacing: 1px;
     }
 
-    .description {
-      max-width: 800px;
-      margin: 0 auto 2.5rem;
-      font-size: 1.1rem;
-      line-height: 1.6;
-      background: rgba(0, 0, 0, 0.2);
-      padding: 20px;
-      border-radius: 10px;
+    .theme-toggle {
+      background: #1e1e2e;
+      border: 1px solid #4a4a7a;
+      border-radius: 30px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #ffcc00;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
     }
 
-    .viewer {
+    .theme-toggle:hover {
+      background: #2a2a3e;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+    }
+
+    .theme-toggle i {
+      font-size: 1.3rem;
+    }
+
+    .gallery-container {
+      display: flex;
+      gap: 30px;
+      background: rgba(30, 30, 46, 0.8);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+      height: 75vh;
+      min-height: 600px;
+    }
+
+    .thumbnails {
+      width: 130px;
+      background: rgba(22, 22, 40, 0.9);
+      padding: 25px 15px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 30px;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      padding: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      gap: 20px;
+      overflow-y: auto;
+      height: 100%;
+      scrollbar-width: thin;
+      scrollbar-color: #ff9900 #161628;
     }
 
-    .main-display {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      gap: 40px;
-      flex-wrap: wrap;
+    .thumbnails::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .thumbnails::-webkit-scrollbar-track {
+      background: #161628;
+      border-radius: 4px;
+    }
+
+    .thumbnails::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #ff9900, #ff6b00);
+      border-radius: 4px;
+    }
+
+    .thumbnails img {
       width: 100%;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: all 0.3s ease;
+      background: #0f0f1a;
+      padding: 3px;
+    }
+
+    .thumbnails img:hover {
+      opacity: 1;
+      transform: scale(1.05);
+      border-color: #4a4a7a;
+    }
+
+    .thumbnails img.active {
+      opacity: 1;
+      border-color: #ff9900;
+      box-shadow: 0 0 15px rgba(255, 153, 0, 0.5);
+      transform: scale(1.05);
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      height: 100%;
+    }
+
+    .image-display {
+      display: flex;
+      gap: 30px;
+      height: 75%;
+      flex: 1;
     }
 
     .img-wrapper {
+      flex: 1;
       position: relative;
-      width: 500px;
-      height: 400px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
       overflow: hidden;
-      border-radius: 8px;
-      background: rgba(0, 0, 0, 0.1);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      border: 1px solid #3a506b;
+      background: #0f0f1a;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      height: 100%;
     }
 
     .img-wrapper img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       display: block;
-      transition: transform 0.3s ease;
+      background: #0a0a12;
     }
 
     .zoom-box {
+      flex: 1;
       display: none;
-      width: 500px;
-      height: 400px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #3a506b;
       background-repeat: no-repeat;
       background-size: 200% 200%;
-      border-radius: 8px;
-      background-color: rgba(0, 0, 0, 0.1);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      height: 100%;
+      background-color: #0a0a12;
     }
 
-    .thumbnails {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-      padding: 10px;
-      background: rgba(0, 0, 0, 0.1);
+    .image-info {
+      background: rgba(22, 22, 40, 0.8);
+      padding: 20px;
       border-radius: 10px;
-      width: 100%;
-      max-width: 1000px;
+      text-align: center;
+      border: 1px solid #3a506b;
     }
 
-    .thumbnails img {
-      width: 90px;
-      height: 70px;
-      border: 2px solid transparent;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border-radius: 4px;
-      object-fit: cover;
-      background: rgba(0, 0, 0, 0.2);
+    .image-info h3 {
+      color: #ffcc00;
+      margin-bottom: 10px;
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: 1px;
     }
 
-    .thumbnails img:hover {
-      transform: scale(1.05);
-      border-color: rgba(255, 255, 255, 0.5);
-    }
-
-    .thumbnails img.active {
-      border-color: #ff9900;
-      transform: scale(1.1);
-      box-shadow: 0 0 15px rgba(255, 153, 0, 0.5);
+    .image-info p {
+      color: #aaa;
+      line-height: 1.7;
+      max-width: 800px;
+      margin: 0 auto;
     }
 
     .instructions {
-      margin-top: 20px;
-      font-size: 1rem;
-      color: rgba(255, 255, 255, 0.8);
-      font-style: italic;
+      background: linear-gradient(45deg, #1a1a2e, #1e1e3e);
+      padding: 15px 20px;
+      border-radius: 10px;
+      text-align: center;
+      color: #ffcc00;
+      border: 1px solid #3a506b;
+      font-size: 1.1rem;
     }
 
-    @media (max-width: 1100px) {
-      .main-display {
-        flex-direction: column;
-        align-items: center;
+    .instructions i {
+      margin-right: 8px;
+      color: #ff9900;
+    }
+
+    /* Light mode styles */
+    body.light-mode {
+      background: linear-gradient(135deg, #e6e9ff, #eef0ff);
+      color: #333;
+    }
+
+    body.light-mode header {
+      border-color: #c5cae9;
+    }
+
+    body.light-mode .theme-toggle {
+      background: #fff;
+      border-color: #c5cae9;
+      color: #ff6b00;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    body.light-mode .gallery-container {
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    body.light-mode .thumbnails {
+      background: rgba(240, 240, 255, 0.9);
+    }
+
+    body.light-mode .thumbnails::-webkit-scrollbar-track {
+      background: #e0e0ff;
+    }
+
+    body.light-mode .image-info {
+      background: rgba(240, 240, 255, 0.9);
+    }
+
+    body.light-mode .image-info h3 {
+      color: #ff6b00;
+    }
+
+    body.light-mode .image-info p {
+      color: #555;
+    }
+
+    body.light-mode .instructions {
+      background: linear-gradient(45deg, #e6e9ff, #dde0ff);
+      color: #ff6b00;
+      border-color: #c5cae9;
+    }
+
+    body.light-mode .img-wrapper, 
+    body.light-mode .zoom-box {
+      background: #f0f0ff;
+      border-color: #c5cae9;
+    }
+
+    body.light-mode .img-wrapper img {
+      background: #f5f5ff;
+    }
+
+    /* Responsive design */
+    @media (max-width: 1200px) {
+      .gallery-container {
+        height: auto;
+        min-height: 0;
       }
       
-      .img-wrapper, .zoom-box {
-        width: 90%;
-        max-width: 600px;
+      .image-display {
+        height: 60vh;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .gallery-container {
+        flex-direction: column;
+        height: auto;
+      }
+      
+      .thumbnails {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 15px;
+        height: auto;
+      }
+      
+      .thumbnails img {
+        width: 100px;
+        height: 80px;
+      }
+      
+      .image-display {
+        flex-direction: column;
+        height: auto;
+        flex: none;
+        height: 70vh;
       }
     }
 
     @media (max-width: 768px) {
-      .img-wrapper, .zoom-box {
-        height: 350px;
-      }
-      
-      .thumbnails img {
-        width: 70px;
-        height: 55px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .img-wrapper, .zoom-box {
-        height: 250px;
+      header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
       }
       
       h1 {
-        font-size: 1.8rem;
+        font-size: 2.2rem;
+      }
+      
+      .image-display {
+        height: 60vh;
+        gap: 20px;
+      }
+      
+      .image-info h3 {
+        font-size: 1.5rem;
       }
     }
 
-    .image-title {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      color: white;
-      padding: 10px;
-      text-align: center;
-      font-size: 1.2rem;
-      transform: translateY(100%);
-      transition: transform 0.3s ease;
-    }
-
-    .img-wrapper:hover .image-title {
-      transform: translateY(0);
+    @media (max-width: 576px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .image-display {
+        height: 50vh;
+        gap: 15px;
+      }
+      
+      .image-info {
+        padding: 15px;
+      }
+      
+      .instructions {
+        font-size: 0.95rem;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>📸 Portfolio Screenshot Gallery – Amazon-style Zoom</h1>
-    
-    <div class="description">
-      <p>Experience Amazon-style image zoom functionality. Hover over the main image to see a magnified view. Click thumbnails to switch images.</p>
-    </div>
-
-    <div class="viewer">
-      <div class="main-display">
-        <div class="img-wrapper" id="imageWrapper">
-          <img id="mainImage" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Main Screenshot" />
-          <div class="image-title">Homepage Design</div>
-        </div>
-        <div class="zoom-box" id="zoomBox"></div>
+    <header>
+      <h1><i class="fas fa-camera"></i> Portfolio Website Gallery</h1>
+      <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-sun"></i>
+        <span>Light Mode</span>
       </div>
-
+    </header>
+    
+    <div class="gallery-container">
       <div class="thumbnails">
-        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Homepage" data-title="Homepage Design" onclick="switchImage(this)" class="active" />
-        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1160&q=80" alt="About" data-title="About Page" onclick="switchImage(this)" />
-        <img src="https://images.unsplash.com/photo-1586769852836-bc069f19e1b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Projects" data-title="Projects Gallery" onclick="switchImage(this)" />
-        <img src="https://images.unsplash.com/photo-1586769852044-692d6e3703f0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Skills" data-title="Skills Section" onclick="switchImage(this)" />
-        <img src="https://images.unsplash.com/photo-1586769852257-4f89f3645236?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Contact" data-title="Contact Page" onclick="switchImage(this)" />
+        <img src="./Screenshots/homepage-screenshot.png" 
+             alt="Homepage" data-title="Homepage" data-desc="Modern homepage with clean design and intuitive navigation" onclick="switchImage(this)" class="active">
+        <img src="./Screenshots/about-screenshot.png" 
+             alt="About" data-title="About Page" data-desc="Professional about section highlighting skills and experience" onclick="switchImage(this)">
+        <img src="./Screenshots/projects-screenshot.png" 
+             alt="Projects" data-title="Projects Page" data-desc="Showcase of completed projects with detailed case studies" onclick="switchImage(this)">
+        <img src="./Screenshots/skills-screenshot.png" 
+             alt="Skills" data-title="Skills Page" data-desc="Comprehensive skills matrix with proficiency indicators" onclick="switchImage(this)">
+        <img src="./Screenshots/contact-screenshot.png" 
+             alt="Contact" data-title="Contact Page" data-desc="Easy-to-use contact form with social media links" onclick="switchImage(this)">
       </div>
       
-      <div class="instructions">
-        Hover over the main image to activate the zoom effect
+      <div class="main-content">
+        <div class="image-display">
+          <div class="img-wrapper" id="imageWrapper">
+            <img id="mainImage" src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Main Screenshot">
+          </div>
+          <div class="zoom-box" id="zoomBox"></div>
+        </div>
+        
+        <div class="image-info">
+          <h3 id="imageTitle">Homepage</h3>
+        </div>
+        
+        <div class="instructions">
+          <i class="fas fa-info-circle"></i> Hover over the main image to activate the zoom effect. Click thumbnails to switch images.
+        </div>
       </div>
     </div>
   </div>
-
+  
   <script>
     const mainImage = document.getElementById("mainImage");
     const imageWrapper = document.getElementById("imageWrapper");
     const zoomBox = document.getElementById("zoomBox");
     const thumbnails = document.querySelectorAll(".thumbnails img");
-    const imageTitle = document.querySelector(".image-title");
-
-    // Set initial zoomBox background to the main image
+    const imageTitle = document.getElementById("imageTitle");
+    const imageDesc = document.getElementById("imageDesc");
+    const themeToggle = document.getElementById("themeToggle");
+    
+    // Initialize zoomBox background
     zoomBox.style.backgroundImage = `url(${mainImage.src})`;
-
-    imageWrapper.addEventListener("mousemove", function (e) {
+    
+    // Add mousemove event for zoom effect
+    imageWrapper.addEventListener("mousemove", function(e) {
       const rect = mainImage.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       
-      // Calculate percentage position
       const xPercent = (x / rect.width) * 100;
       const yPercent = (y / rect.height) * 100;
       
-      // Show the zoom box and set background position
       zoomBox.style.display = "block";
       zoomBox.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
     });
-
-    imageWrapper.addEventListener("mouseleave", function () {
+    
+    // Hide zoom box when mouse leaves
+    imageWrapper.addEventListener("mouseleave", function() {
       zoomBox.style.display = "none";
     });
-
+    
+    // Function to switch images
     function switchImage(thumb) {
-      // Update active thumbnail
       thumbnails.forEach(t => t.classList.remove("active"));
       thumb.classList.add("active");
       
-      // Update main image
       mainImage.src = thumb.src;
-      
-      // Update zoom box background
       zoomBox.style.backgroundImage = `url(${thumb.src})`;
-      
-      // Update image title
       imageTitle.textContent = thumb.dataset.title;
+      imageDesc.textContent = thumb.dataset.desc;
     }
+    
+    // Theme toggle functionality
+    themeToggle.addEventListener("click", function() {
+      document.body.classList.toggle("light-mode");
+      
+      if (document.body.classList.contains("light-mode")) {
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
+      } else {
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
+      }
+    });
+    
+    switchImage(document.querySelector(".thumbnails img.active"));
   </script>
 </body>
 </html>
