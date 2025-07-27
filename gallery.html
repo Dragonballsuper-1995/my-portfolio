@@ -27,16 +27,18 @@
 
     h1 {
       margin-bottom: 1rem;
+      color: inherit;
     }
 
     .toggle-btn {
       background: none;
-      border: 1px solid #aaa;
+      border: 1px solid currentColor;
       padding: 8px 16px;
       font-size: 14px;
       border-radius: 6px;
       cursor: pointer;
       margin-bottom: 2rem;
+      color: inherit;
       transition: background 0.3s;
     }
 
@@ -54,22 +56,19 @@
     .gallery-item {
       position: relative;
       overflow: hidden;
+      width: 400px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease;
       animation: fadeIn 0.6s ease both;
     }
 
-    .gallery-item:hover img {
-      transform: scale(1.1);
-    }
-
     .gallery-item img {
-      width: 400px;
+      width: 100%;
       height: auto;
       border-radius: 10px;
-      transition: transform 0.3s ease;
+      transition: transform 0.5s ease;
       display: block;
+      cursor: pointer;
     }
 
     .caption {
@@ -86,11 +85,45 @@
       transition: opacity 0.3s ease;
       background-color: rgba(0, 0, 0, 0.4);
       backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px); /* for Safari */
+      -webkit-backdrop-filter: blur(8px);
     }
 
     .gallery-item:hover .caption {
       opacity: 1;
+    }
+
+    /* Zoom-to-center effect */
+    .zoom-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.3s ease;
+    }
+
+    .zoom-overlay img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 10px;
+      animation: zoomIn 0.3s ease;
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.7);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
     @keyframes fadeIn {
@@ -110,19 +143,17 @@
         color: #f0f0f0;
       }
 
-      .toggle-btn {
-        border-color: #666;
-      }
-
       .caption {
         background-color: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+      }
+
+      .toggle-btn {
+        border-color: #666;
       }
     }
 
     @media (max-width: 500px) {
-      .gallery-item img {
+      .gallery-item {
         width: 90vw;
       }
     }
@@ -134,35 +165,30 @@
 
   <div class="gallery">
     <div class="gallery-item">
-      <a href="./Screenshots/homepage-screenshot.png" target="_blank">
-        <img src="./Screenshots/homepage-screenshot.png" alt="Homepage" />
-        <div class="caption">Homepage</div>
-      </a>
+      <img src="./Screenshots/homepage-screenshot.png" alt="Homepage" onclick="zoomImage(this)" />
+      <div class="caption">Homepage</div>
     </div>
     <div class="gallery-item">
-      <a href="./Screenshots/about-screenshot.png" target="_blank">
-        <img src="./Screenshots/about-screenshot.png" alt="About Page" />
-        <div class="caption">About Page</div>
-      </a>
+      <img src="./Screenshots/about-screenshot.png" alt="About Page" onclick="zoomImage(this)" />
+      <div class="caption">About Page</div>
     </div>
     <div class="gallery-item">
-      <a href="./Screenshots/projects-screenshot.png" target="_blank">
-        <img src="./Screenshots/projects-screenshot.png" alt="Projects" />
-        <div class="caption">Projects</div>
-      </a>
+      <img src="./Screenshots/projects-screenshot.png" alt="Projects" onclick="zoomImage(this)" />
+      <div class="caption">Projects</div>
     </div>
     <div class="gallery-item">
-      <a href="./Screenshots/skills-screenshot.png" target="_blank">
-        <img src="./Screenshots/skills-screenshot.png" alt="Skills" />
-        <div class="caption">Skills</div>
-      </a>
+      <img src="./Screenshots/skills-screenshot.png" alt="Skills" onclick="zoomImage(this)" />
+      <div class="caption">Skills</div>
     </div>
     <div class="gallery-item">
-      <a href="./Screenshots/contact-screenshot.png" target="_blank">
-        <img src="./Screenshots/contact-screenshot.png" alt="Contact" />
-        <div class="caption">Contact</div>
-      </a>
+      <img src="./Screenshots/contact-screenshot.png" alt="Contact" onclick="zoomImage(this)" />
+      <div class="caption">Contact</div>
     </div>
+  </div>
+
+  <!-- Overlay for fullscreen zoom -->
+  <div id="zoomOverlay" class="zoom-overlay" style="display: none;" onclick="closeZoom()">
+    <img id="zoomedImage" src="" alt="Zoomed Image">
   </div>
 
   <script>
@@ -173,6 +199,17 @@
 
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       document.body.classList.add('dark');
+    }
+
+    function zoomImage(img) {
+      const overlay = document.getElementById('zoomOverlay');
+      const zoomed = document.getElementById('zoomedImage');
+      zoomed.src = img.src;
+      overlay.style.display = 'flex';
+    }
+
+    function closeZoom() {
+      document.getElementById('zoomOverlay').style.display = 'none';
     }
   </script>
 </body>
