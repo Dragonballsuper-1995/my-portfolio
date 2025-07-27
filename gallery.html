@@ -2,42 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Amazon-style Screenshot Zoom Gallery + Dark Mode</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Screenshot Zoom Gallery + Dark Mode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    /* Base styles */
     body {
       font-family: Arial, sans-serif;
       background: #f9f9f9;
       color: #111;
       padding: 2rem;
       text-align: center;
-      transition: background 0.3s, color 0.3s;
+      transition: background-color 0.3s, color 0.3s;
+      margin: 0;
     }
     body.dark {
       background: #121212;
       color: #eee;
     }
-
     h1 {
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
     }
-
-    /* Dark mode button */
-    #darkModeBtn {
-      margin-bottom: 2rem;
-      padding: 0.5rem 1rem;
+    button {
       cursor: pointer;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
       border: none;
+      border-radius: 5px;
       background-color: #007bff;
       color: white;
-      font-size: 1rem;
-      border-radius: 4px;
+      margin-bottom: 2rem;
       transition: background-color 0.3s;
     }
-    #darkModeBtn:hover {
+    button:hover {
       background-color: #0056b3;
     }
 
+    /* Gallery container */
     .gallery {
       display: flex;
       flex-wrap: wrap;
@@ -45,64 +45,73 @@
       gap: 20px;
     }
 
+    /* Each image wrapper */
     .img-wrapper {
       position: relative;
-      width: 300px;
+      width: 320px;
       height: 200px;
       border: 1px solid #ccc;
       overflow: hidden;
       cursor: crosshair;
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      transition: border-color 0.3s;
     }
     body.dark .img-wrapper {
       border-color: #555;
+      background: #222;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
     }
 
+    /* Images */
     .img-wrapper img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       display: block;
       transition: transform 0.3s ease;
+      user-select: none;
+      pointer-events: none; /* prevent image capturing mouse events */
     }
-    /* Slight zoom on hover for the image */
     .img-wrapper:hover img {
       transform: scale(1.1);
     }
 
-    /* Zoom box for each image */
+    /* Zoom box */
     .zoom-box {
       position: absolute;
       top: 0;
       left: 100%;
-      margin-left: 10px;
-      width: 300px;
+      width: 320px;
       height: 200px;
       border: 1px solid #ccc;
       background-repeat: no-repeat;
       background-size: 200% 200%;
       display: none;
-      z-index: 10;
+      border-radius: 6px;
       box-shadow: 0 0 8px rgba(0,0,0,0.3);
+      z-index: 10;
+      transition: opacity 0.2s;
     }
     body.dark .zoom-box {
       border-color: #555;
-      box-shadow: 0 0 8px rgba(255,255,255,0.3);
+      box-shadow: 0 0 10px rgba(255,255,255,0.3);
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 700px) {
       .gallery {
         flex-direction: column;
         align-items: center;
       }
       .zoom-box {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        margin-left: 0;
-        transform: translate(-50%, -50%);
-        width: 90vw;
-        height: 60vw;
-        background-size: 200% 200%;
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 90vw !important;
+        height: 60vw !important;
+        background-size: 200% 200% !important;
       }
     }
   </style>
@@ -111,9 +120,7 @@
   <h1>📸 Portfolio Screenshot Gallery – Amazon-style Zoom</h1>
   <button id="darkModeBtn">Toggle Dark Mode</button>
 
-  <div class="gallery" id="gallery">
-    <!-- Images inserted by JS -->
-  </div>
+  <div class="gallery" id="gallery"></div>
 
   <script>
     const images = [
@@ -124,54 +131,55 @@
       { src: "./Screenshots/contact-screenshot.png", alt: "Contact" },
     ];
 
-    const gallery = document.getElementById("gallery");
+    const gallery = document.getElementById('gallery');
 
-    images.forEach(({src, alt}) => {
-      // Create wrapper div
-      const wrapper = document.createElement("div");
-      wrapper.classList.add("img-wrapper");
+    images.forEach(({ src, alt }) => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'img-wrapper';
 
-      // Create img element
-      const img = document.createElement("img");
+      const img = document.createElement('img');
       img.src = src;
       img.alt = alt;
 
-      // Create zoom box
-      const zoomBox = document.createElement("div");
-      zoomBox.classList.add("zoom-box");
+      const zoomBox = document.createElement('div');
+      zoomBox.className = 'zoom-box';
 
       wrapper.appendChild(img);
       wrapper.appendChild(zoomBox);
       gallery.appendChild(wrapper);
 
-      // Mouse move event to update zoom box background position
-      wrapper.addEventListener("mousemove", e => {
+      // Show zoom and update background on mouse move
+      wrapper.addEventListener('mousemove', e => {
         const rect = img.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        let x = e.clientX - rect.left;
+        let y = e.clientY - rect.top;
+
+        // Clamp x/y inside image boundaries
+        x = Math.max(0, Math.min(x, rect.width));
+        y = Math.max(0, Math.min(y, rect.height));
+
         const xPercent = (x / rect.width) * 100;
         const yPercent = (y / rect.height) * 100;
 
-        zoomBox.style.display = "block";
-        zoomBox.style.backgroundImage = `url(${src})`;
+        zoomBox.style.display = 'block';
+        zoomBox.style.backgroundImage = `url('${src}')`;
         zoomBox.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
       });
 
-      // Hide zoom box on mouse leave
-      wrapper.addEventListener("mouseleave", () => {
-        zoomBox.style.display = "none";
+      // Hide zoom when mouse leaves image
+      wrapper.addEventListener('mouseleave', () => {
+        zoomBox.style.display = 'none';
       });
     });
 
-    // Dark mode toggle button
-    const darkModeBtn = document.getElementById("darkModeBtn");
-    darkModeBtn.addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-      // Optional: change button text
-      if (document.body.classList.contains("dark")) {
-        darkModeBtn.textContent = "Switch to Light Mode";
+    // Dark mode toggle
+    const darkModeBtn = document.getElementById('darkModeBtn');
+    darkModeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      if (document.body.classList.contains('dark')) {
+        darkModeBtn.textContent = 'Switch to Light Mode';
       } else {
-        darkModeBtn.textContent = "Switch to Dark Mode";
+        darkModeBtn.textContent = 'Switch to Dark Mode';
       }
     });
   </script>
