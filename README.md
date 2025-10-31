@@ -5,8 +5,6 @@
 
 This is my personal developer portfolio website, built with **HTML**, **CSS**, and **Tailwind CSS**, showcasing who I am, what I do, and the projects I've worked on — from AI systems to full-stack applications.
 
-> Designed using [DeepSite](https://huggingface.co/spaces/SujalChhajed925/sujal-sanjay-chhajed-portfolio) and deployed via GitHub Pages.
-
 ---
 
 ## 🌐 Live Demo
