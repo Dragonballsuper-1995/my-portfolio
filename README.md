@@ -3,96 +3,73 @@
 
 ![MIT License](https://img.shields.io/badge/License-MIT-green.svg)
 
-My personal developer portfolio showcasing AI + software work. It’s a static site optimized for performance, built with a local Tailwind build, self‑hosted fonts, and lightweight SVG icons.
+A fast, modern portfolio site showcasing my work across AI, NLP, and full‑stack development. The design follows a clean “Spatial” glass aesthetic with careful attention to performance, accessibility, and readability in both dark and light modes.
 
 ## 🌐 Live
 
-- Portfolio: https://dragonballsuper-1995.github.io/my-portfolio/
+https://dragonballsuper-1995.github.io/my-portfolio/
 
-## ✨ Highlights
+## 🔎 What’s inside
 
-- Responsive, accessible UI with a glass “Spatial” theme
-- Dark/Light theme toggle (state persisted)
-- Lucide SVG icons (no heavy icon font)
-- Self‑hosted Inter variable font (preloaded for fast paint)
+- About: a concise bio and background
+- Projects: highlights with links to code and live demos
+- Skills: core areas and tools I use
+- Contact: a simple way to reach me (email form)
+
+## ✨ Design & UX
+
+- Glass “Spatial” look with subtle depth and glow
+- Dark/Light theme toggle with preference remembered
+- Responsive layout from mobile to desktop
+- Accessible contrasts and motion‑reduced fallbacks
+
+## ⚡ Performance
+
 - Single, minified CSS bundle (Tailwind + site + fonts)
-- Performance extras: content‑visibility, reduced‑motion, image hints (loading/decoding/fetchpriority), preconnects
-- Contact form wired to Formspree with inline success/error UX
+- Self‑hosted Inter variable font with preload for faster first paint
+- Lucide SVG icons (no heavy icon fonts)
+- Image loading hints (loading/decoding/fetchpriority) and explicit dimensions
+- content‑visibility + contain‑intrinsic‑size to skip off‑screen work
 
-## 🧰 Tech Stack
+## 🧰 Architecture
 
-- HTML + CSS (Tailwind compiled locally via PostCSS)
-- Tailwind CSS, PostCSS, Autoprefixer, cssnano, postcss-import
-- Lucide icons (via unpkg)
-- Formspree (zero‑backend form handling)
-- Hosted on GitHub Pages
+- Static HTML + CSS, with Tailwind compiled locally via PostCSS
+- Tooling: Tailwind CSS, postcss-import, Autoprefixer, cssnano
+- Icons: Lucide (loaded with `defer`)
+- Contact: Formspree‑backed form with inline success/error feedback
+- Hosting: GitHub Pages
 
-## 📁 Project Structure
+## 📁 Structure
 
 ```
 my-portfolio/
-├─ index.html                 # Main page (loads a single CSS bundle)
-├─ Assets/                    # Images, fonts, favicon
+├─ index.html
+├─ Assets/
 │  └─ fonts/InterVariable.woff2
 ├─ css/
-│  ├─ tw.css                  # Build entry (imports fonts.css + site.css + @tailwind)
-│  ├─ fonts.css               # @font-face for Inter variable (source)
-│  ├─ site.css                # Site styles (source)
-│  └─ tailwind.build.css      # Output bundle (committed)
+│  ├─ tw.css                 # Build entry (imports fonts.css + site.css)
+│  ├─ fonts.css              # @font-face (source)
+│  ├─ site.css               # Site styles (source)
+│  └─ tailwind.build.css     # Output bundle
 ├─ js/
-│  ├─ theme-init.js           # Prevent theme FOUC
-│  ├─ theme.js                # Theme + dock/nav sync + animations wiring
-│  ├─ animations.js           # Typewriter + 3D tilt
-│  └─ form.js                 # Formspree async submit + status
-├─ tailwind.config.js         # Tailwind config (content + fonts)
-├─ postcss.config.js          # postcss-import + tailwindcss + autoprefixer + cssnano
-├─ package.json               # build scripts
-├─ package-lock.json          # lockfile for reproducible builds
-├─ .gitignore                 # ignores node_modules, logs, etc.
+│  ├─ theme-init.js
+│  ├─ theme.js
+│  ├─ animations.js
+│  └─ form.js
+├─ tailwind.config.js
+├─ postcss.config.js
+├─ package.json
+├─ package-lock.json
+├─ .gitignore
 ├─ LICENSE
 └─ README.md
 ```
 
-Note: The former gallery page was intentionally removed.
+Note: The previous gallery page was intentionally removed to keep the experience focused.
 
-## ▶️ Develop & Build
+## 📬 Contact
 
-Prereqs: Node 18+ recommended.
-
-Install deps:
-
-```bash
-npm install
-```
-
-Build CSS (single bundle at css/tailwind.build.css):
-
-```bash
-npm run build:css
-```
-
-Watch during development:
-
-```bash
-npm run watch:css
-```
-
-Open index.html in your browser (use a local server or VS Code Live Server for best results).
-
-## ✉️ Contact Form (Formspree)
-
-The contact form posts to Formspree. One‑time setup:
-
-1. Create a form at https://formspree.io and copy your FORM_ID (looks like `f/abcdwxyz`).
-2. In `index.html`, replace `FORM_ID` in the form action: `https://formspree.io/f/FORM_ID`.
-3. Deploy and test. You should receive emails on submit. Inline success/error messages are handled by `js/form.js`.
-
-## 🧪 Performance Notes
-
-- InterVariable.woff2 is preloaded in `<head>` and self‑hosted for consistency and speed.
-- Lucide icons render after `lucide.createIcons()` (script loaded with `defer`).
-- Sections use `content-visibility` + `contain-intrinsic-size` to reduce offscreen work.
-- Animations respect `prefers-reduced-motion`.
+Email: sujalchhajed925@gmail.com
 
 ## 📄 License
 
