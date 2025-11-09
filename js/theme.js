@@ -32,24 +32,72 @@ document.addEventListener('DOMContentLoaded', () => {
     updateThemeTooltips(isLight);
   }
 
-  if (navbarToggle) {
-    navbarToggle.addEventListener('click', () => {
+  // Apply theme with circular reveal animation
+  function applyThemeWithAnimation(toggleElement) {
+    const isLight = document.documentElement.classList.contains('light-mode');
+    const willBeLight = !isLight;
+
+    // Get click position from the toggle element
+    let x = window.innerWidth / 2;
+    let y = window.innerHeight / 2;
+    
+    if (toggleElement) {
+      const rect = toggleElement.getBoundingClientRect();
+      x = rect.left + rect.width / 2;
+      y = rect.top + rect.height / 2;
+    }
+
+    // Check if View Transition API is supported
+    if (!document.startViewTransition) {
+      // Fallback for browsers that don't support View Transition API
       document.documentElement.classList.toggle('light-mode');
       const theme = document.documentElement.classList.contains('light-mode') ? 'light' : 'dark';
       try { localStorage.setItem('theme', theme); } catch (e) {}
       syncThemeToggles();
       if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+      return;
+    }
+
+    // Use View Transition API for smooth circular reveal
+    const transition = document.startViewTransition(() => {
+      document.documentElement.classList.toggle('light-mode');
+      const theme = document.documentElement.classList.contains('light-mode') ? 'light' : 'dark';
+      try { localStorage.setItem('theme', theme); } catch (e) {}
+      syncThemeToggles();
+    });
+
+    transition.ready.then(() => {
+      // Set the CSS variables for the circular reveal position
+      document.documentElement.style.setProperty('--theme-x', `${x}px`);
+      document.documentElement.style.setProperty('--theme-y', `${y}px`);
+    }).catch(error => {
+      console.error("Error during View Transition setup:", error);
+    });
+
+    transition.finished.then(() => {
+      if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+    }).catch(error => {
+      console.error("Error during View Transition finish:", error);
+    });
+  }
+
+  if (navbarToggle) {
+    navbarToggle.addEventListener('click', (e) => {
+      applyThemeWithAnimation(navbarToggle);
     });
   }
 
   // Dock toggle should also switch theme
   if (dockToggle) {
-    dockToggle.addEventListener('click', () => {
-      document.documentElement.classList.toggle('light-mode');
-      const theme = document.documentElement.classList.contains('light-mode') ? 'light' : 'dark';
-      try { localStorage.setItem('theme', theme); } catch (e) {}
-      syncThemeToggles();
-      if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+    dockToggle.addEventListener('click', (e) => {
+      applyThemeWithAnimation(dockToggle);
+    });
+  }
+
+  // Mobile toggle if it exists
+  if (mobileToggle) {
+    mobileToggle.addEventListener('click', (e) => {
+      applyThemeWithAnimation(mobileToggle);
     });
   }
 
@@ -80,7 +128,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function requestTick() {
-    if (!ticking) { requestAnimationFrame(handleNavbarDockScroll); ticking = true; }
+    if (window.rafScheduler) {
+      window.rafScheduler.schedule('ui:navbarDock', () => { handleNavbarDockScroll(); });
+    } else if (!ticking) {
+      requestAnimationFrame(handleNavbarDockScroll);
+      ticking = true;
+    }
   }
 
   handleNavbarDockScroll();

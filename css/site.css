@@ -1,5 +1,11 @@
 /* Moved from inline <style> in index.html */
 
+/* CSS Variables for theme transition */
+:root {
+    --theme-x: 50%;
+    --theme-y: 50%;
+}
+
 /* Default (dark) background + text */
 body {
     background: radial-gradient(1200px circle at 20% 10%, #0f172a 0%, #0b1220 35%, #070d1a 60%, #050a13 100%);
@@ -27,12 +33,19 @@ body {
 /* Glass effect styling */
 .glass-effect {
     background: rgba(255, 255, 255, 0.05);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     padding: 2rem;
+    contain: layout style paint; /* Performance optimization */
+}
+
+/* Reduce blur on non-hero sections for performance */
+section:not(#hero) .glass-effect {
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
 }
 
 /* Animated background glow effect */
@@ -44,10 +57,12 @@ body {
     height: 800px;
     background: radial-gradient(circle, rgba(129, 140, 248, 0.5) 0%, rgba(167, 139, 250, 0.3) 100%);
     filter: blur(150px);
-    transform: translate(-50%, -50%);
+    transform: translate3d(-50%, -50%, 0); /* GPU acceleration */
     z-index: -1;
     animation: breathing 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     pointer-events: none;
+    will-change: transform; /* GPU hint */
+    backface-visibility: hidden; /* Performance optimization */
 }
 
 /* Base glass UI dock (replaces deleted test/themes.css) */
@@ -78,17 +93,19 @@ body {
 .glass-card {
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    contain: layout style paint; /* Performance optimization */
 }
 
 .glass-card-inner {
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    contain: layout style paint; /* Performance optimization */
 }
 
 /* Glass buttons */
@@ -160,15 +177,15 @@ body {
 
 @keyframes breathing {
     0% { 
-        transform: translate(-50%, -50%) scale(0.9);
+        transform: translate3d(-50%, -50%, 0) scale(0.9); /* GPU acceleration */
         opacity: 0.6;
     }
     50% { 
-        transform: translate(-50%, -50%) scale(1.1);
+        transform: translate3d(-50%, -50%, 0) scale(1.1); /* GPU acceleration */
         opacity: 0.9;
     }
     100% { 
-        transform: translate(-50%, -50%) scale(0.9);
+        transform: translate3d(-50%, -50%, 0) scale(0.9); /* GPU acceleration */
         opacity: 0.6;
     }
 }
@@ -182,11 +199,11 @@ body {
 
 @keyframes breathing-light {
     0% { 
-        transform: translate(-50%, -50%) scale(0.85);
+        transform: translate3d(-50%, -50%, 0) scale(0.85); /* GPU acceleration */
         opacity: 0.5;
     }
     50% { 
-        transform: translate(-50%, -50%) scale(1.15);
+        transform: translate3d(-50%, -50%, 0) scale(1.15); /* GPU acceleration */
         opacity: 0.85;
     }
     100% { 
@@ -450,8 +467,8 @@ body:not(.light-mode) .theme-icon-sun { display: block; }
 /* Contact section styles from index_1.html */
 .contact-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; }
 .contact-info { display: flex; flex-direction: column; gap: 2rem; }
-.contact-card { text-align: center; }
-.contact-card i { font-size: 2rem; color: #a5b4fc; margin-bottom: 1rem; transition: color 0.3s ease; }
+.contact-card { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.contact-card i { font-size: 2.2rem; color: #a5b4fc; margin: 0 0 1rem; transition: color 0.3s ease; display: inline-flex; align-items: center; justify-content: center; }
 .contact-card:hover i { color: #c4b5fd; }
 .contact-card h4 { font-size: 1.2rem; font-weight: 600; color: #ffffff; margin-bottom: 0.5rem; }
 .contact-card p { color: #9ca3af; margin-bottom: 1rem; font-size: 0.95rem; }
@@ -564,3 +581,46 @@ section.scroll-out { opacity: 0; transform: translateY(-50px); transition: all 0
 .light-mode .mobile-menu a:hover { color: #0891b2; background: rgba(178, 235, 242, 0.5); }
 
 @media (max-width: 900px) { .nav-links { display: none; } .menu-toggle { display: block; } }
+
+/* View Transition API - Circular Reveal Animation for Theme Toggle */
+@keyframes theme-reveal-in {
+    from {
+        clip-path: circle(0% at var(--theme-x) var(--theme-y));
+    }
+    to {
+        clip-path: circle(150% at var(--theme-x) var(--theme-y));
+    }
+}
+
+@keyframes theme-reveal-out {
+    from {
+        clip-path: circle(150% at var(--theme-x) var(--theme-y));
+    }
+    to {
+        clip-path: circle(0% at var(--theme-x) var(--theme-y));
+    }
+}
+
+/* Apply circular reveal animation when theme changes */
+::view-transition-new(root) {
+    animation: theme-reveal-in 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    z-index: 1;
+    mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+    animation: theme-reveal-out 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    z-index: 0;
+    mix-blend-mode: normal;
+}
+
+::view-transition-image-pair(root) {
+    isolation: isolate;
+}
+
+/* Fallback for browsers without View Transition API support */
+@supports not (view-transition-name: root) {
+    body {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+}

@@ -1,0 +1,184 @@
+/* Performance Optimizations for 60fps+ */
+
+/* Enable GPU acceleration for commonly animated elements */
+.glass-card,
+.glass-button,
+.glass-button-primary,
+.glass-effect,
+.dock-link,
+.social-icon,
+.skill-badge,
+.nav-link,
+.navbar,
+.mobile-menu {
+    transform: translateZ(0); /* Force GPU layer */
+    backface-visibility: hidden; /* Prevent flickering */
+}
+
+/* Optimize scrolling performance */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Contain layout and paint for better performance */
+.glass-card {
+    contain: layout style paint;
+}
+
+section {
+    contain: layout;
+}
+
+/* Optimize hover transitions */
+.glass-card,
+.glass-button,
+.glass-button-primary {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reduce motion for performance on mobile */
+@media (max-width: 768px) {
+    /* Reduce animation complexity on mobile */
+    .firefly-container {
+        opacity: 0.5;
+    }
+    
+    .firefly:nth-child(n+4) {
+        display: none; /* Hide extra fireflies on mobile */
+    }
+    
+    /* Simplify 3D transforms on mobile */
+    #projects .glass-card {
+        transform: none !important;
+    }
+}
+
+/* Optimize for high refresh rate displays */
+@media (min-resolution: 120dpi) {
+    .glass-card,
+    .glass-button,
+    .glass-button-primary {
+        transition-duration: 0.2s; /* Faster on high-DPI */
+    }
+}
+
+/* Content visibility optimization for off-screen elements */
+section:not(#hero) {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+}
+
+/* Optimize images */
+img {
+    content-visibility: auto;
+    contain-intrinsic-size: 320px 240px;
+}
+
+/* Prevent layout shift */
+.glass-card img {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+/* Hardware acceleration for scroll-linked animations */
+@supports (animation-timeline: scroll()) {
+    /* Future-proof for scroll-driven animations */
+    .section-animate {
+        animation-timeline: scroll();
+    }
+}
+
+/* Reduce repaints */
+.navbar,
+.glass-ui {
+    will-change: transform, opacity;
+}
+
+/* Optimize backdrop filters */
+@supports (backdrop-filter: blur(20px)) {
+    .glass-card,
+    .glass-effect,
+    .navbar {
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+    }
+}
+
+/* Fallback for browsers without backdrop-filter support */
+@supports not (backdrop-filter: blur(20px)) {
+    .glass-card,
+    .glass-effect,
+    .navbar {
+        background: rgba(255, 255, 255, 0.15);
+    }
+}
+
+/* Critical rendering path optimization */
+.hero-section {
+    content-visibility: visible;
+}
+
+/* Prevent FOUC (Flash of Unstyled Content) */
+html {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Optimize for 120fps displays */
+@media screen and (min-resolution: 2dppx) {
+    * {
+        /* Smoother animations on high refresh rate displays */
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+}
+
+/* Performance optimization during scrolling */
+body.is-scrolling {
+    /* Reduce backdrop filter blur during scroll */
+    .glass-effect,
+    .glass-card,
+    .navbar {
+        -webkit-backdrop-filter: blur(5px) !important;
+        backdrop-filter: blur(5px) !important;
+    }
+    
+    /* Pause non-critical animations during scroll */
+    .firefly-container {
+        display: none;
+    }
+    
+    /* Reduce shadow complexity during scroll */
+    .glass-card,
+    .glass-button,
+    .glass-button-primary {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+}
+
+/* Hide meteor canvas when scrolled past hero for better performance */
+#meteor-canvas-container {
+    transition: opacity 0.3s ease;
+}
+
+body:not(.is-scrolling) #meteor-canvas-container {
+    opacity: 1;
+}
+
+/* Reduce opacity when scrolled away from hero */
+@supports (content-visibility: auto) {
+    section:not(#hero) {
+        content-visibility: auto;
+    }
+}
+
+/* Ensure contact icons are centered (applies even without rebuilding Tailwind bundle) */
+.contact-card svg,
+.contact-card i {
+    display: block;
+    margin: 0 auto 1rem;
+    width: 2.25rem;
+    height: 2.25rem;
+}

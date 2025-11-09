@@ -13,10 +13,29 @@
     <link rel="preload" href="Assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/tailwind.build.css" />
     <link rel="preconnect" href="https://unpkg.com" />
+    <!-- Performance: Nabla font preconnects -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <script src="https://unpkg.com/lucide@latest" defer></script>
     <link rel="icon" href="./Assets/favicon.png" type="image/png" />
 
+    <!-- Three.js for meteor shower animation (deferred for better performance) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
     
+    <!-- Meteor shower styles -->
+    <link rel="stylesheet" href="css/meteor.css" />
+    
+    <!-- Fireflies glow effect -->
+    <link rel="stylesheet" href="css/fireflies.css" />
+    
+    <!-- Aurora effect for name -->
+    <link rel="stylesheet" href="css/aurora.css" />
+    
+    <!-- Nabla color font for typewriter -->
+    <link rel="stylesheet" href="css/nabla-typewriter.css" />
+    
+    <!-- Performance optimizations -->
+    <link rel="stylesheet" href="css/performance.css" />
 
         <!-- Site styles are merged into tailwind.build.css -->
 
@@ -131,7 +150,9 @@
             <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between">
                 <div class="md:w-1/2 mt-8 md:mt-0">
                     <h3 class="font-semibold mb-2 text-indigo-300">Hello, I'm</h3>
-                    <h1 class="text-5xl md:text-7xl font-extrabold mb-4"><span class="gradient-text">Sujal Sanjay Chhajed</span></h1>
+                    <h1 class="hero-name text-5xl md:text-7xl font-extrabold mb-4">
+                        Sujal Sanjay Chhajed
+                    </h1>
                     <h2 id="hero-subtitle" class="text-2xl md:text-3xl font-medium text-indigo-300 mb-4 min-h-[2.5rem] md:min-h-[3rem]"><span id="typewriter-text"></span><span class="typewriter-cursor">|</span></h2>
                     <p class="text-lg text-gray-200 mb-8 max-w-xl">
                         AI & software enthusiast passionate about crafting intelligent solutions — from NLP-powered systems to interactive web experiences. Skilled in blending deep learning with clean engineering to solve real-world challenges.
@@ -467,12 +488,14 @@
                             <i data-lucide="mail" class="w-6 h-6"></i>
                             <h4>Email</h4>
                             <p>sujalchhajed925@gmail.com</p>
-                            <a href="mailto:sujalchhajed925@gmail.com">Send an Email</a>
+                            <!-- Open Gmail compose with the To field prefilled -->
+                            <a class="glass-button" href="https://mail.google.com/mail/?view=cm&fs=1&to=sujalchhajed925@gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Open Gmail compose to email sujalchhajed925@gmail.com">Send an Email</a>
                         </div>
                         <div class="contact-card glass-effect">
                             <i data-lucide="phone" class="w-6 h-6"></i>
                             <h4>Phone</h4>
                             <p>+91 9307346453</p>
+                            <a class="glass-button" href="tel:+919307346453" aria-label="Call +91 9307346453">Call Me</a>
                         </div>
                     </div>
                     <!-- Formspree: replace FORM_ID below after creating your form at https://formspree.io -->
@@ -485,7 +508,7 @@
                             <input type="text" name="name" placeholder="Full Name" required autocomplete="name">
                             <input type="email" name="email" placeholder="Email Address" required autocomplete="email">
                         </div>
-                        <textarea name="message" rows="3" placeholder="Your Message" required></textarea>
+                        <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
                         <button type="submit" class="btn">Send Message</button>
                         <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
                     </form>
@@ -515,11 +538,23 @@
             </div>
         </footer>
     </main>
+        <!-- Centralized RAF scheduler -->
+        <script src="js/raf-scheduler.js" defer></script>
+
         <!-- Sync navbar theme toggle with dock theme toggle -->
-        <script src="js/theme.js"></script>
+        <script src="js/theme.js" defer></script>
 
         <!-- Enhancements: Typewriter subtitle + 3D tilt (retained from previous version) -->
-        <script src="js/animations.js"></script>
-    <script src="js/form.js"></script>
+        <script src="js/animations.js" defer></script>
+    <script src="js/form.js" defer></script>
+    
+    <!-- Three.js Meteor Shower Animation -->
+    <script src="js/meteor-shower.js" defer></script>
+    
+    <!-- Fireflies Glow Effect -->
+    <script src="js/fireflies.js" defer></script>
+    
+    <!-- Performance Monitor & Optimizations -->
+    <script src="js/performance.js" defer></script>
 </body>
 </html>
