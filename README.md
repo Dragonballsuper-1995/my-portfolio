@@ -159,7 +159,7 @@ npm run minify:css
 ## 📬 Contact
 
 Email: sujalchhajed925@gmail.com\
-LinkedIn: https://www.linkedin.com/in/sujalchhajed925/\
+LinkedIn: https://www.linkedin.com/in/sujalchhajed925/
 
 ## 📄 License
 
