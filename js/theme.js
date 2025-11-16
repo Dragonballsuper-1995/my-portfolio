@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const theme = document.documentElement.classList.contains('light-mode') ? 'light' : 'dark';
       try { localStorage.setItem('theme', theme); } catch (e) {}
       syncThemeToggles();
+      try{ document.dispatchEvent(new CustomEvent('theme:changed', { detail: { theme } })); }catch(e){}
       if (typeof lucide !== 'undefined') { lucide.createIcons(); }
       return;
     }
@@ -64,6 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const theme = document.documentElement.classList.contains('light-mode') ? 'light' : 'dark';
       try { localStorage.setItem('theme', theme); } catch (e) {}
       syncThemeToggles();
+      // Dispatch a simple event so other modules (cursor, widgets) can sync their colors
+      try{ document.dispatchEvent(new CustomEvent('theme:changed', { detail: { theme } })); }catch(e){}
     });
 
     transition.ready.then(() => {

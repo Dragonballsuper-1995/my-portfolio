@@ -461,6 +461,65 @@ body:not(.light-mode) .theme-icon-sun { display: block; }
 #projects .glass-card .project-description { flex: 1; min-height: 4.5rem; }
 #projects .glass-card .project-tags { min-height: 3rem; }
 
+/* New project card animated effect (replaces 3D tilt)
+     - Subtle lift (translateY) and stronger glow on hover/focus
+     - Soft shimmer vignette runs once on enter for a unique look
+     - Uses will-change + translate3d for GPU-accelerated, performant animation
+*/
+.glass-card { position: relative; overflow: hidden; transition: transform .28s cubic-bezier(.2,.9,.3,1), box-shadow .28s cubic-bezier(.2,.9,.3,1); }
+.glass-card::before { /* vignette */
+    content: '';
+    position: absolute; inset: 0;
+    pointer-events: none;
+    background: radial-gradient(600px 200px at 20% 10%, rgba(129,140,248,0.06), rgba(0,0,0,0) 40%);
+    mix-blend-mode: screen;
+    opacity: 0; transition: opacity .28s ease;
+}
+.glass-card::after { /* shimmer element */
+    content: '';
+    position: absolute; left: -120%; top: -40%; width: 40%; height: 180%;
+    pointer-events: none;
+    background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-20deg) translate3d(0,0,0);
+    opacity: 0;
+}
+
+/* animated state applied by JS on pointerenter/focus */
+.glass-card.project-animate{
+    transform: translate3d(0,-8px,0);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35), 0 6px 18px rgba(99,102,241,0.06);
+}
+.glass-card.project-animate::before{ opacity: 1; }
+.glass-card.project-animate::after{ animation: shimmer 900ms cubic-bezier(.2,.9,.3,1); opacity: 1; }
+
+@keyframes shimmer {
+    0% { transform: translate3d(-120%,0,0) skewX(-20deg); opacity: 0; }
+    20% { opacity: 0.9; }
+    100% { transform: translate3d(320%,0,0) skewX(-20deg); opacity: 0; }
+}
+
+/* Active interactive elements inside card get an accent underline reveal */
+.glass-card .project-content a:hover, .glass-card .project-content a:focus {
+    text-decoration: none;
+    position: relative;
+}
+.glass-card .project-content a::after{
+    content: '';
+    position: absolute; left: 0; bottom: -4px; height: 3px; width: 0%;
+    background: linear-gradient(90deg,#818cf8,#a78bfa);
+    transition: width .28s cubic-bezier(.2,.9,.3,1);
+}
+.glass-card .project-content a:hover::after, .glass-card .project-content a:focus::after{ width: 100%; }
+
+/* Light-mode tweaks for the same effect (so shimmer is visible on pale backgrounds) */
+.light-mode .glass-card::before{ background: radial-gradient(600px 200px at 20% 10%, rgba(6,182,212,0.06), rgba(255,255,255,0) 40%); mix-blend-mode: normal; }
+.light-mode .glass-card.project-animate{ box-shadow: 0 18px 40px rgba(6,182,212,0.08), 0 6px 18px rgba(6,182,212,0.04); }
+
+@media (prefers-reduced-motion: reduce){
+    .glass-card, .glass-card::after { transition: none !important; animation: none !important; }
+    .glass-card.project-animate{ transform: none; box-shadow: 0 8px 18px rgba(0,0,0,0.08); }
+}
+
 /* Section title styling */
 .section-title { font-size: 3rem; font-weight: 700; text-align: center; margin-bottom: 4rem; color: #ffffff; }
 

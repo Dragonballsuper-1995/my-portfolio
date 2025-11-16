@@ -17,7 +17,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <script src="https://unpkg.com/lucide@latest" defer></script>
-    <link rel="icon" href="./Assets/favicon.png" type="image/png" />
+    <link rel="icon" href="./Assets/favicon.webp" type="image/webp" />
+    <link rel="preload" href="Assets/profile-pic-cropped.webp" as="image" type="image/webp" />
 
     <!-- Three.js for meteor shower animation (deferred for better performance) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
@@ -37,7 +38,10 @@
     <!-- Performance optimizations -->
     <link rel="stylesheet" href="css/performance.css" />
 
-        <!-- Site styles are merged into tailwind.build.css -->
+    <!-- Site styles are merged into tailwind.build.css -->
+
+    <!-- Custom cursor styles (hero-only) -->
+    <link rel="stylesheet" href="css/cursor.css" />
 
         <!-- Tiny critical CSS to paint the shell fast -->
         <style>
@@ -59,6 +63,12 @@
             .light-mode .theme-icon-moon{display:block}
             body:not(.light-mode) .theme-icon-moon{display:none}
             body:not(.light-mode) .theme-icon-sun{display:block}
+            /* Accessibility: Focus styles for interactive elements */
+            a:focus, button:focus, input:focus, textarea:focus {
+                outline: 2px solid #818cf8;
+                outline-offset: 2px;
+                box-shadow: 0 0 0 2px #a5b4fc44;
+            }
         </style>
     
 </head>
@@ -147,8 +157,21 @@
     <main class="relative z-10">
         <!-- HERO (keep your two-column layout, apply buttons from Spatial) -->
         <section id="hero" class="relative min-h-screen flex items-center pt-20 pb-16">
-            <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between">
-                <div class="md:w-1/2 mt-8 md:mt-0">
+            <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16">
+                <div class="md:w-1/2 flex justify-center mt-12 md:mt-0 order-1 md:order-2">
+                    <div class="relative">
+                        <div class="rounded-full overflow-hidden w-64 h-64 md:w-80 md:h-80 border border-white/30">
+                            <img src="Assets/profile-pic-cropped.webp" alt="Sujal Sanjay Chhajed" class="w-full h-full object-cover" width="320" height="320" loading="eager" decoding="async" fetchpriority="high" />
+                        </div>
+                        <div class="glass-card-inner absolute -top-4 -right-4 rounded-xl px-4 py-2 rotate-6">
+                            <span class="font-bold text-indigo-300">AI Developer</span>
+                        </div>
+                        <div class="glass-card-inner absolute -bottom-4 -left-4 rounded-xl px-4 py-2 -rotate-6">
+                            <span class="font-bold text-indigo-300">ML Engineer</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 mt-8 md:mt-0 order-2 md:order-1">
                     <h3 class="font-semibold mb-2 text-indigo-300">Hello, I'm</h3>
                     <h1 class="hero-name text-5xl md:text-7xl font-extrabold mb-4">
                         Sujal Sanjay Chhajed
@@ -164,20 +187,6 @@
                     <div class="mt-4 max-w-md">
                         <a href="https://dragonballsuper-1995.github.io/my-portfolio/Assets/Updated%20Resume.pdf" target="_blank" class="glass-button w-full">View Resume</a>
                     </div>
-                </div>
-                <div class="md:w-1/2 flex justify-center mt-12 md:mt-0">
-                    <div class="relative">
-                        <div class="rounded-full overflow-hidden w-64 h-64 md:w-80 md:h-80 border border-white/30">
-                            <img src="Assets/profile-pic-cropped.png" alt="Sujal Sanjay Chhajed" class="w-full h-full object-cover" width="320" height="320" loading="eager" decoding="async" fetchpriority="high" />
-                        </div>
-                        <div class="glass-card-inner absolute -top-4 -right-4 rounded-xl px-4 py-2 rotate-6">
-                            <span class="font-bold text-indigo-300">AI Developer</span>
-                        </div>
-                        <div class="glass-card-inner absolute -bottom-4 -left-4 rounded-xl px-4 py-2 -rotate-6">
-                            <span class="font-bold text-indigo-300">ML Engineer</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -283,7 +292,12 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
                     <div class="glass-card p-6">
                         <a href="https://huggingface.co/spaces/SujalChhajed925/yt-title-desc-generator" target="_blank" rel="noopener noreferrer" class="block mb-4">
-                            <img src="./Assets/yt-title-desc-generator.png" alt="YouTube Title & Description Generator Project" class="rounded-lg w-full h-48 object-cover" loading="lazy" decoding="async" fetchpriority="low" width="800" height="450">
+                               <img src="./Assets/yt-title-desc-generator.webp"
+                                   srcset="./Assets/yt-title-desc-generator-400.webp 400w, ./Assets/yt-title-desc-generator.webp 800w"
+                                   sizes="(max-width: 600px) 400px, 800px"
+                                   alt="YouTube Title & Description Generator Project"
+                                   class="rounded-lg w-full h-48 object-cover"
+                                   loading="lazy" decoding="async" fetchpriority="low" width="800" height="450">
                         </a>
                         <div class="project-content">
                             <div class="flex items-center justify-between mb-4">
@@ -310,7 +324,12 @@
 
                     <div class="glass-card p-6">
                         <a href="https://huggingface.co/spaces/ayush-shukla135/AnomLogBert" target="_blank" rel="noopener noreferrer" class="block mb-4">
-                            <img src="./Assets/anomlogbert.png" alt="AnomLogBERT Project" class="rounded-lg w-full h-48 object-cover" loading="lazy" decoding="async" fetchpriority="low" width="800" height="450">
+                               <img src="./Assets/anomlogbert.webp"
+                                   srcset="./Assets/anomlogbert-400.webp 400w, ./Assets/anomlogbert.webp 800w"
+                                   sizes="(max-width: 600px) 400px, 800px"
+                                   alt="AnomLogBERT Project"
+                                   class="rounded-lg w-full h-48 object-cover"
+                                   loading="lazy" decoding="async" fetchpriority="low" width="800" height="450">
                         </a>
                         <div class="project-content">
                             <div class="flex items-center justify-between mb-4">
@@ -337,7 +356,12 @@
 
                     <div class="glass-card p-6">
                         <a href="https://siddharth-y26.github.io/Urban-Escapade/" target="_blank" rel="noopener noreferrer" class="block mb-4">
-                            <img src="./Assets/urban-escapade.png" alt="Urban Escapade Project" class="rounded-lg w-full h-48 object-cover" loading="lazy" decoding="async" fetchpriority="low" width="800" height="450">
+                               <img src="./Assets/urban-escapade.webp"
+                                   srcset="./Assets/urban-escapade-400.webp 400w, ./Assets/urban-escapade.webp 800w"
+                                   sizes="(max-width: 600px) 400px, 800px"
+                                   alt="Urban Escapade Project"
+                                   class="rounded-lg w-full h-48 object-cover"
+                                   loading="lazy" decoding="async" fetchpriority="low" width="800" height="450">
                         </a>
                         <div class="project-content">
                             <div class="flex items-center justify-between mb-4">
@@ -364,7 +388,12 @@
 
                     <div class="glass-card p-6">
                         <a href="https://dragonballsuper-1995.github.io/Fantasy_Premier_League_Analytics_Hub/" target="_blank" rel="noopener noreferrer" class="block mb-4">
-                            <img src="./Assets/fpl-analytics-hub.png" alt="FPL Analytics Hub" class="rounded-lg w-full h-48 object-cover" loading="lazy" decoding="async" fetchpriority="low" width="800" height="450">
+                               <img src="./Assets/fpl-analytics-hub.webp"
+                                   srcset="./Assets/fpl-analytics-hub-400.webp 400w, ./Assets/fpl-analytics-hub.webp 800w"
+                                   sizes="(max-width: 600px) 400px, 800px"
+                                   alt="FPL Analytics Hub"
+                                   class="rounded-lg w-full h-48 object-cover"
+                                   loading="lazy" decoding="async" fetchpriority="low" width="800" height="450">
                         </a>
                         <div class="project-content">
                             <div class="flex items-center justify-between mb-4">
@@ -480,7 +509,7 @@
 
         <!-- CONTACT -->
         <section id="contact" class="py-20">
-            <div class="container">
+            <div class="max-w-7xl mx-auto px-6">
                 <h2 class="section-title">Get In <span class="gradient-text">Touch</span></h2>
                 <div class="contact-grid">
                     <div class="contact-info">
@@ -508,7 +537,7 @@
                             <input type="text" name="name" placeholder="Full Name" required autocomplete="name">
                             <input type="email" name="email" placeholder="Email Address" required autocomplete="email">
                         </div>
-                        <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+                        <textarea name="message" rows="8" placeholder="Your Message" required></textarea>
                         <button type="submit" class="btn">Send Message</button>
                         <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
                     </form>
@@ -556,5 +585,13 @@
     
     <!-- Performance Monitor & Optimizations -->
     <script src="js/performance.js" defer></script>
+    <script src="js/cursor.js" defer></script>
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/sw.js');
+                });
+            }
+        </script>
 </body>
 </html>

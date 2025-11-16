@@ -70,46 +70,15 @@ document.addEventListener('DOMContentLoaded', () => {
     typeEffect();
   }
 
-  // 2) 3D tilt only on PROJECT CARDS (Performance optimized with requestAnimationFrame)
-  const interactive = document.querySelectorAll('#projects .glass-card');
-  interactive.forEach(elem => {
-    elem.style.transformStyle = 'preserve-3d';
-    elem.style.willChange = 'transform'; // GPU acceleration hint
-    
-    let ticking = false;
-    let mouseX = 0;
-    let mouseY = 0;
-    let rect = null;
-    
-    const updateTransform = () => {
-      if (!rect) return;
-      
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = (mouseY - centerY) / 20;
-      const rotateY = (mouseX - centerX) / -20;
-      elem.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-      ticking = false;
-    };
-    
-    elem.addEventListener('mouseenter', () => {
-      rect = elem.getBoundingClientRect();
-    });
-    
-    elem.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
-      
-      if (!ticking) {
-        requestAnimationFrame(updateTransform);
-        ticking = true;
-      }
-    });
-    
-    elem.addEventListener('mouseleave', () => {
-      elem.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
-      elem.style.willChange = 'auto'; // Release GPU resources
-      rect = null;
-    });
+  // 2) Project card no-tilt animated effect
+  // Replace 3D tilt with a lightweight, theme-matching animation: lift + glow + subtle shimmer.
+  // We toggle a class on pointerenter/leave and focus for accessibility; CSS handles the animation.
+  const projectCards = document.querySelectorAll('#projects .glass-card');
+  projectCards.forEach(card => {
+    // Use pointer events to support touch/pointer types; reduced-motion users will see no animation via CSS media queries
+    card.addEventListener('pointerenter', () => card.classList.add('project-animate'));
+    card.addEventListener('pointerleave', () => card.classList.remove('project-animate'));
+    card.addEventListener('focusin', () => card.classList.add('project-animate'));
+    card.addEventListener('focusout', () => card.classList.remove('project-animate'));
   });
 });
