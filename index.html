@@ -43,6 +43,11 @@
     <!-- Custom cursor styles (hero-only) -->
     <link rel="stylesheet" href="css/cursor.css" />
 
+    <!-- Liquid Glass Project Card Styles -->
+    <link rel="stylesheet" href="css/cards.css" />
+    <!-- Page loader styles -->
+    <link rel="stylesheet" href="css/loading.css" />
+
         <!-- Tiny critical CSS to paint the shell fast -->
         <style>
             /* Critical: background + navbar shell */
@@ -76,6 +81,25 @@
 <body>
     <!-- Animated background glow -->
     <div class="background-glow"></div>
+
+        <!-- Site loading overlay (shows until assets/fonts/images load) -->
+        <div id="site-loader" role="status" aria-live="polite">
+            <div class="loader-card">
+                <div class="loader-brand">
+                    <div class="loader-logo">SC</div>
+                    <div class="loader-text">
+                        <div class="loader-title">Sujal Chhajed</div>
+                        <div class="loader-sub">Preparing portfolio — loading assets</div>
+                    </div>
+                </div>
+                <div class="loader-progress">
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <div class="progress-percent">0%</div>
+                    <div class="loader-status" aria-live="polite">Preparing portfolio — loading assets</div>
+                </div>
+                <div class="spinner" aria-hidden="true"></div>
+            </div>
+        </div>
 
     <!-- Top Navbar -->
     <header class="header">
@@ -282,153 +306,130 @@
         </section>
         
         <!-- PROJECTS (keep 3-column grid, style each as glass-card) -->
-        <section id="projects" class="py-20">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="flex flex-col items-center mb-12">
-                    <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
-                    <p class="text-gray-200 max-w-2xl text-center">Explore my latest projects where I've applied AI and software engineering to solve complex problems</p>
-                </div>
+                <section id="projects" class="py-20">
+                        <div class="max-w-7xl mx-auto px-6">
+                                <div class="flex flex-col items-center mb-12">
+                                        <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
+                                        <p class="text-gray-200 max-w-2xl text-center">Explore my latest projects where I've applied AI and software engineering to solve complex problems</p>
+                                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-                    <div class="glass-card p-6">
-                        <a href="https://huggingface.co/spaces/SujalChhajed925/yt-title-desc-generator" target="_blank" rel="noopener noreferrer" class="block mb-4">
-                               <img src="./Assets/yt-title-desc-generator.webp"
-                                   srcset="./Assets/yt-title-desc-generator-400.webp 400w, ./Assets/yt-title-desc-generator.webp 800w"
-                                   sizes="(max-width: 600px) 400px, 800px"
-                                   alt="YouTube Title & Description Generator Project"
-                                   class="rounded-lg w-full h-48 object-cover"
-                                   loading="lazy" decoding="async" fetchpriority="low" width="800" height="450">
-                        </a>
-                        <div class="project-content">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold">YouTube Title & Description Generator</h3>
-                                <a href="https://github.com/Dragonballsuper-1995/yt-title-desc-generator" target="_blank" class="text-indigo-300" rel="noopener noreferrer" aria-label="External link">
-                                    <i data-lucide="external-link" class="w-4 h-4"></i>
-                                </a>
-                            </div>
-                            <p class="text-gray-200 mb-6 project-description">AI-powered tool to automatically generate SEO-friendly YouTube titles, descriptions, hashtags, and tags from any video script or summary.</p>
-                            <div class="flex flex-wrap gap-2 mb-6 project-tags">
-                                <span class="skill-badge">T5 Model</span>
-                                <span class="skill-badge">BART</span>
-                                <span class="skill-badge">RAKE Algorithm</span>
-                                <span class="skill-badge">Gradio UI</span>
-                            </div>
-                            <div class="flex flex-wrap gap-4 mt-auto">
-                                <a href="https://github.com/Dragonballsuper-1995/yt-title-desc-generator" target="_blank" class="glass-button flex-1 text-center" rel="noopener noreferrer">View on GitHub</a>
-                            </div>
-                            <div class="flex flex-wrap gap-4 mt-4">
-                                <a href="https://huggingface.co/spaces/SujalChhajed925/yt-title-desc-generator" target="_blank" class="glass-button flex-1 text-center" rel="noopener noreferrer">Live Demo</a>
-                            </div>
-                        </div>
-                    </div>
+                                <!-- Liquid Glass Project Cards Grid -->
+                                <div class="projects-grid">
+                                    <!-- Card 1: YouTube Title Generator -->
+                                    <div class="project-card">
+                                        <div class="card-noise"></div>
+                                        <div class="card-image-wrapper">
+                                            <img src="./Assets/yt-title-desc-generator.webp" alt="YouTube Title Generator" class="card-image" />
+                                            <div class="card-gradient-dark"></div>
+                                            <div class="card-gradient-light"></div>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="card-text-container">
+                                                <h3 class="card-title">YouTube Title Generator</h3>
+                                                <p class="card-desc">AI-powered tool to generate SEO-friendly YouTube titles and descriptions using T5 and BART models.</p>
+                                                <div class="card-tags">
+                                                    <span class="tag">T5 Model</span>
+                                                    <span class="tag">BART</span>
+                                                    <span class="tag">RAKE Algorithm</span>
+                                                    <span class="tag">Gradio UI</span>
+                                                </div>
+                                                <div class="card-links">
+                                                    <a href="https://huggingface.co/spaces/SujalChhajed925/yt-title-desc-generator" target="_blank" class="btn btn-primary">Live Demo</a>
+                                                    <a href="https://github.com/Dragonballsuper-1995/yt-title-desc-generator" target="_blank" class="btn btn-secondary">GitHub</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                    <div class="glass-card p-6">
-                        <a href="https://huggingface.co/spaces/ayush-shukla135/AnomLogBert" target="_blank" rel="noopener noreferrer" class="block mb-4">
-                               <img src="./Assets/anomlogbert.webp"
-                                   srcset="./Assets/anomlogbert-400.webp 400w, ./Assets/anomlogbert.webp 800w"
-                                   sizes="(max-width: 600px) 400px, 800px"
-                                   alt="AnomLogBERT Project"
-                                   class="rounded-lg w-full h-48 object-cover"
-                                   loading="lazy" decoding="async" fetchpriority="low" width="800" height="450">
-                        </a>
-                        <div class="project-content">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold">AnomLogBERT</h3>
-                                <a href="https://github.com/Ayushs135/AnomLogBert" target="_blank" class="text-indigo-300" rel="noopener noreferrer" aria-label="External link">
-                                    <i data-lucide="external-link" class="w-4 h-4"></i>
-                                </a>
-                            </div>
-                            <p class="text-gray-200 mb-6 project-description">Deep learning framework for automated anomaly detection in system log files using transformer-based models.</p>
-                            <div class="flex flex-wrap gap-2 mb-6 project-tags">
-                                <span class="skill-badge">all-MiniLM-L12-v2</span>
-                                <span class="skill-badge">Transformers</span>
-                                <span class="skill-badge">Log Analysis</span>
-                                <span class="skill-badge">Anomaly Detection</span>
-                            </div>
-                            <div class="flex flex-wrap gap-4 mt-auto">
-                                <a href="https://github.com/Ayushs135/AnomLogBert" target="_blank" class="glass-button flex-1 text-center" rel="noopener noreferrer">View on GitHub</a>
-                            </div>
-                            <div class="flex flex-wrap gap-4 mt-4">
-                                <a href="https://huggingface.co/spaces/ayush-shukla135/AnomLogBert" target="_blank" class="glass-button flex-1 text-center" rel="noopener noreferrer">Live Demo</a>
-                            </div>
-                        </div>
-                    </div>
+                                    <!-- Card 2: AnomLogBERT -->
+                                    <div class="project-card">
+                                        <div class="card-noise"></div>
+                                        <div class="card-image-wrapper">
+                                            <img src="./Assets/anomlogbert.webp" alt="AnomLogBERT" class="card-image" />
+                                            <div class="card-gradient-dark"></div>
+                                            <div class="card-gradient-light"></div>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="card-text-container">
+                                                <h3 class="card-title">AnomLogBERT</h3>
+                                                <p class="card-desc">Deep learning framework for automated anomaly detection in system log files using transformer-based models.</p>
+                                                <div class="card-tags">
+                                                    <span class="tag">all-MiniLM-L12-v2</span>
+                                                    <span class="tag">Transformers</span>
+                                                    <span class="tag">Log Analysis</span>
+                                                    <span class="tag">Anomaly Detection</span>
+                                                </div>
+                                                <div class="card-links">
+                                                    <a href="https://huggingface.co/spaces/ayush-shukla135/AnomLogBert" target="_blank" class="btn btn-primary">Live Demo</a>
+                                                    <a href="https://github.com/Ayushs135/AnomLogBert" target="_blank" class="btn btn-secondary">GitHub</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                    <div class="glass-card p-6">
-                        <a href="https://siddharth-y26.github.io/Urban-Escapade/" target="_blank" rel="noopener noreferrer" class="block mb-4">
-                               <img src="./Assets/urban-escapade.webp"
-                                   srcset="./Assets/urban-escapade-400.webp 400w, ./Assets/urban-escapade.webp 800w"
-                                   sizes="(max-width: 600px) 400px, 800px"
-                                   alt="Urban Escapade Project"
-                                   class="rounded-lg w-full h-48 object-cover"
-                                   loading="lazy" decoding="async" fetchpriority="low" width="800" height="450">
-                        </a>
-                        <div class="project-content">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold">Urban Escapade</h3>
-                                <a href="https://github.com/Siddharth-Y26/Urban-Escapade" target="_blank" class="text-indigo-300" rel="noopener noreferrer" aria-label="External link">
-                                    <i data-lucide="external-link" class="w-4 h-4"></i>
-                                </a>
-                            </div>
-                            <p class="text-gray-200 mb-6 project-description">Interactive website showcasing India's diverse states with cultural, regional, and geographical information.</p>
-                            <div class="flex flex-wrap gap-2 mb-6 project-tags">
-                                <span class="skill-badge">HTML5</span>
-                                <span class="skill-badge">CSS3</span>
-                                <span class="skill-badge">JavaScript</span>
-                                <span class="skill-badge">Responsive Design</span>
-                            </div>
-                            <div class="flex flex-wrap gap-4 mt-auto">
-                                <a href="https://github.com/Siddharth-Y26/Urban-Escapade" target="_blank" class="glass-button flex-1 text-center" rel="noopener noreferrer">View on GitHub</a>
-                            </div>
-                            <div class="flex flex-wrap gap-4 mt-4">
-                                <a href="https://siddharth-y26.github.io/Urban-Escapade/" target="_blank" class="glass-button flex-1 text-center" rel="noopener noreferrer">Live Demo</a>
-                            </div>
-                        </div>
-                    </div>
+                                    <!-- Card 3: Urban Escapade -->
+                                    <div class="project-card">
+                                        <div class="card-noise"></div>
+                                        <div class="card-image-wrapper">
+                                            <img src="./Assets/urban-escapade.webp" alt="Urban Escapade" class="card-image" />
+                                            <div class="card-gradient-dark"></div>
+                                            <div class="card-gradient-light"></div>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="card-text-container">
+                                                <h3 class="card-title">Urban Escapade</h3>
+                                                <p class="card-desc">Interactive website showcasing India's diverse states with cultural, regional, and geographical information.</p>
+                                                <div class="card-tags">
+                                                    <span class="tag">HTML5</span>
+                                                    <span class="tag">CSS3</span>
+                                                    <span class="tag">JavaScript</span>
+                                                    <span class="tag">Responsive Design</span>
+                                                </div>
+                                                <div class="card-links">
+                                                    <a href="https://siddharth-y26.github.io/Urban-Escapade/" target="_blank" class="btn btn-primary">Live Demo</a>
+                                                    <a href="https://github.com/Siddharth-Y26/Urban-Escapade" target="_blank" class="btn btn-secondary">GitHub</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                    <div class="glass-card p-6">
-                        <a href="https://dragonballsuper-1995.github.io/Fantasy_Premier_League_Analytics_Hub/" target="_blank" rel="noopener noreferrer" class="block mb-4">
-                               <img src="./Assets/fpl-analytics-hub.webp"
-                                   srcset="./Assets/fpl-analytics-hub-400.webp 400w, ./Assets/fpl-analytics-hub.webp 800w"
-                                   sizes="(max-width: 600px) 400px, 800px"
-                                   alt="FPL Analytics Hub"
-                                   class="rounded-lg w-full h-48 object-cover"
-                                   loading="lazy" decoding="async" fetchpriority="low" width="800" height="450">
-                        </a>
-                        <div class="project-content">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold">Fantasy Premier League Analytics Hub</h3>
-                                <a href="https://github.com/Dragonballsuper-1995/Fantasy_Premier_League_Analytics_Hub" target="_blank" class="text-indigo-300" rel="noopener noreferrer" aria-label="External link">
-                                    <i data-lucide="external-link" class="w-4 h-4"></i>
-                                </a>
-                            </div>
-                            <p class="text-gray-200 mb-6 project-description">A fully automated analytics hub that uses Python (Pandas, XGBoost) and GitHub Actions to fetch live FPL data, retrain 5 ML models, and deploy daily player point predictions to a responsive dashboard.</p>
-                            <div class="flex flex-wrap gap-2 mb-6 project-tags">
-                                <span class="skill-badge">Python</span>
-                                <span class="skill-badge">Machine Learning</span>
-                                <span class="skill-badge">GitHub Actions</span>
-                                <span class="skill-badge">Pandas</span>
-                                <span class="skill-badge">JavaScript</span>
-                                <span class="skill-badge">Tailwind CSS</span>
-                                <span class="skill-badge">Chart.js</span>
-                            </div>
-                            <div class="flex flex-wrap gap-4 mt-auto">
-                                <a href="https://github.com/Dragonballsuper-1995/Fantasy_Premier_League_Analytics_Hub" target="_blank" class="glass-button flex-1 text-center" rel="noopener noreferrer">View on GitHub</a>
-                            </div>
-                            <div class="flex flex-wrap gap-4 mt-4">
-                                <a href="https://dragonballsuper-1995.github.io/Fantasy_Premier_League_Analytics_Hub/" target="_blank" class="glass-button flex-1 text-center" rel="noopener noreferrer">Live Demo</a>
-                            </div>
+                                    <!-- Card 4: FPL Analytics Hub -->
+                                    <div class="project-card">
+                                        <div class="card-noise"></div>
+                                        <div class="card-image-wrapper">
+                                            <img src="./Assets/fpl-analytics-hub.webp" alt="FPL Analytics Hub" class="card-image" />
+                                            <div class="card-gradient-dark"></div>
+                                            <div class="card-gradient-light"></div>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="card-text-container">
+                                                <h3 class="card-title">FPL Analytics Hub</h3>
+                                                <p class="card-desc">Automated analytics hub using Python, ML, and GitHub Actions to predict daily FPL player points.</p>
+                                                <div class="card-tags">
+                                                    <span class="tag">Python</span>
+                                                    <span class="tag">Machine Learning</span>
+                                                    <span class="tag">GitHub Actions</span>
+                                                    <span class="tag">Pandas</span>
+                                                    <span class="tag">JavaScript</span>
+                                                    <span class="tag">Tailwind CSS</span>
+                                                    <span class="tag">Chart.js</span>
+                                                </div>
+                                                <div class="card-links">
+                                                    <a href="https://dragonballsuper-1995.github.io/Fantasy_Premier_League_Analytics_Hub/" target="_blank" class="btn btn-primary">Live Demo</a>
+                                                    <a href="https://github.com/Dragonballsuper-1995/Fantasy_Premier_League_Analytics_Hub" target="_blank" class="btn btn-secondary">GitHub</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                </section>
 
         <!-- SKILLS (keep layout, style bars with Tailwind) -->
         <section id="skills" class="py-20">
             <div class="max-w-7xl mx-auto px-6">
                 <div class="flex flex-col items-center mb-12">
-                    <h2 class="section-title">Technical <span class="gradient-text">Skills</span></h2>
+                    <h2 class="section-title">My <span class="gradient-text">Arsenal</span></h2>
                     <p class="text-gray-200 max-w-2xl text-center">My technical expertise spans across AI development, machine learning, and web technologies</p>
                 </div>
 
@@ -494,7 +495,7 @@
                 </div>
 
                 <div class="mt-12">
-                    <h3 class="text-2xl font-bold mb-6 text-center text-indigo-300">Technologies I Work With</h3>
+                    <h3 class="text-2xl font-bold mb-6 text-center text-indigo-300">Technologies I Work In</h3>
                     <div class="flex flex-wrap justify-center gap-4">
                         <span class="skill-badge">Python</span>
                         <span class="skill-badge">TensorFlow/PyTorch</span>
@@ -567,6 +568,8 @@
             </div>
         </footer>
     </main>
+        <!-- Loader script (preloads fonts/images) -->
+        <script src="js/loading.js" defer></script>
         <!-- Centralized RAF scheduler -->
         <script src="js/raf-scheduler.js" defer></script>
 
@@ -593,5 +596,7 @@
                 });
             }
         </script>
+    <!-- Liquid Glass Project Card Interactivity -->
+    <script src="js/cards.js" defer></script>
 </body>
 </html>

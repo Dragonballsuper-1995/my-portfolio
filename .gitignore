@@ -18,3 +18,5 @@ Thumbs.db
 # Env files (if added later)
 .env
 .env.*
+
+react.md
