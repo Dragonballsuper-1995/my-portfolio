@@ -64,12 +64,12 @@ my-portfolio/
 │  ├─ fonts/
 │  │  ├─ InterVariable.woff2
 │  │  └─ InterVariable-Italic.woff2
-│  ├─ favicon.png
-│  ├─ profile-pic-cropped.png
-│  ├─ yt-title-desc-generator.png
-│  ├─ anomlogbert.png
-│  ├─ urban-escapade.png
-│  ├─ fpl-analytics-hub.png
+│  ├─ favicon.webp
+│  ├─ profile-pic-cropped.webp
+│  ├─ yt-title-desc-generator.webp
+│  ├─ anomlogbert.webp
+│  ├─ urban-escapade.webp
+│  ├─ fpl-analytics-hub.webp
 │  └─ Updated Resume.pdf
 ├─ css/
 │  ├─ tw.css                # Build entry (imports fonts.css + site.css)

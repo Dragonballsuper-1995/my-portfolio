@@ -36,7 +36,7 @@
     <link rel="stylesheet" href="css/nabla-typewriter.css" />
     
     <!-- Performance optimizations -->
-    <link rel="stylesheet" href="css/performance.css" />
+    <!-- <link rel="stylesheet" href="css/performance.css" /> -->
 
     <!-- Site styles are merged into tailwind.build.css -->
 
@@ -592,7 +592,7 @@
         <script>
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
-                    navigator.serviceWorker.register('/sw.js');
+                    navigator.serviceWorker.register('sw.js');
                 });
             }
         </script>
