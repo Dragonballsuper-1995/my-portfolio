@@ -1,4 +1,4 @@
-// Enhancements: Typewriter subtitle + 3D tilt
+// Enhancements: Typewriter subtitle + 3D tilt + Scroll Reveal
 
 document.addEventListener('DOMContentLoaded', () => {
   // 1) Infinite Typewriter for the subtitle under the name
@@ -70,15 +70,54 @@ document.addEventListener('DOMContentLoaded', () => {
     typeEffect();
   }
 
-  // 2) Project card no-tilt animated effect
-  // Replace 3D tilt with a lightweight, theme-matching animation: lift + glow + subtle shimmer.
-  // We toggle a class on pointerenter/leave and focus for accessibility; CSS handles the animation.
-  const projectCards = document.querySelectorAll('#projects .glass-card');
+  // 2) Project card animation
+  const projectCards = document.querySelectorAll('.project-card'); // Updated to target .project-card
   projectCards.forEach(card => {
-    // Use pointer events to support touch/pointer types; reduced-motion users will see no animation via CSS media queries
-    card.addEventListener('pointerenter', () => card.classList.add('project-animate'));
-    card.addEventListener('pointerleave', () => card.classList.remove('project-animate'));
-    card.addEventListener('focusin', () => card.classList.add('project-animate'));
-    card.addEventListener('focusout', () => card.classList.remove('project-animate'));
+    // Add holographic class on hover (CSS handles visuals, this is just legacy hook if needed)
+    // Actually our new CSS handles :hover natively on .project-card, so no JS needed for hover state
+    // but we might want focus support
+    card.addEventListener('focusin', () => card.classList.add('hover-active'));
+    card.addEventListener('focusout', () => card.classList.remove('hover-active'));
   });
+
+  // 3) Scroll Reveal Animation (AOS style)
+  const revealElements = document.querySelectorAll('.glass-card, .project-card, .section-title, .contact-card, .skill-badge');
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        // Optional: unobserve if we only want it to happen once
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -50px 0px'
+  });
+
+  revealElements.forEach((el, index) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)';
+
+    // Stagger delay based on index (rough heuristic) or data attribute if we had it
+    // But since we observe individually, they naturally stagger as you scroll.
+    // However, for items in the same view (like a grid), let's add a small random delay
+    // to items that appear at the same time? No, simple intersection is usually fine.
+    // Let's just rely on the class addition.
+
+    revealObserver.observe(el);
+  });
+
+  // Add the CSS class dynamically for the reveal state
+  const style = document.createElement('style');
+  style.textContent = `
+    .revealed {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+  `;
+  document.head.appendChild(style);
+
 });
