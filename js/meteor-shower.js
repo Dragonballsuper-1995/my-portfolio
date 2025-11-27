@@ -1,4 +1,4 @@
-// Three.js Meteor Shower Animation with Randomized Directions & Colors
+// Three.js Meteor Shower Animation with Randomized Directions
 // Import Three.js from CDN (loaded via HTML)
 
 class MeteorShower {
@@ -9,7 +9,7 @@ class MeteorShower {
         this.renderer = null;
         this.meteors = [];
         this.stars = [];
-        this.maxMeteors = 6; // Increased slightly
+        this.maxMeteors = 5; // Maximum number of meteors at once
         this.spawnInterval = null;
         this.frameSkipCounter = 0;
         this.initialized = false;
@@ -35,8 +35,6 @@ class MeteorShower {
 
         // Setup Three.js scene
         this.scene = new THREE.Scene();
-        // Fog for depth fading
-        this.scene.fog = new THREE.FogExp2(0x020617, 0.002);
         
         // Setup camera
         this.camera = new THREE.PerspectiveCamera(
@@ -47,13 +45,13 @@ class MeteorShower {
         );
         this.camera.position.z = 50;
 
-        // Setup renderer
+        // Setup renderer with performance optimizations
         this.renderer = new THREE.WebGLRenderer({ 
             alpha: true, 
-            antialias: false, // Disabled for performance style
-            powerPreference: 'high-performance',
-            stencil: false,
-            depth: false
+            antialias: window.devicePixelRatio === 1, // Only enable on low-DPI displays
+            powerPreference: 'high-performance', // Request high-performance GPU
+            stencil: false, // Disable stencil buffer (not needed)
+            depth: false // Disable depth buffer (not needed for 2D stars)
         });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -68,10 +66,11 @@ class MeteorShower {
         // Handle window resize
         window.addEventListener('resize', () => this.onWindowResize(), false);
 
-        // Register animation loop
+        // Register animation loop with centralized RAF scheduler
         if (window.rafScheduler) {
             window.rafScheduler.subscribe('meteor-shower', () => this.animateFrame());
         } else {
+            // Fallback if scheduler not yet loaded
             const loop = () => { this.animateFrame(); requestAnimationFrame(loop); };
             requestAnimationFrame(loop);
         }
@@ -79,7 +78,8 @@ class MeteorShower {
 
     createStars() {
         const starGeometry = new THREE.BufferGeometry();
-        const starCount = window.innerWidth < 768 ? 500 : 800; // More stars
+        // Performance optimization: Reduce star count for better FPS
+        const starCount = window.innerWidth < 768 ? 400 : 600;
         const positions = new Float32Array(starCount * 3);
         const colors = new Float32Array(starCount * 3);
         const sizes = new Float32Array(starCount);
@@ -90,31 +90,28 @@ class MeteorShower {
         for (let i = 0; i < starCount; i++) {
             const i3 = i * 3;
             
-            // Spread stars wider
-            positions[i3] = (Math.random() - 0.5) * 300;
-            positions[i3 + 1] = (Math.random() - 0.5) * 300;
+            // Random positions
+            positions[i3] = (Math.random() - 0.5) * 200;
+            positions[i3 + 1] = (Math.random() - 0.5) * 200;
             positions[i3 + 2] = (Math.random() - 0.5) * 200;
 
-            // Colors: White, Cyan, Purple mixed
-            const colorType = Math.random();
-            if (colorType > 0.9) {
-                // Cyan
-                colors[i3] = 0.2; colors[i3 + 1] = 0.8; colors[i3 + 2] = 1.0;
-            } else if (colorType > 0.8) {
-                // Purple
-                colors[i3] = 0.8; colors[i3 + 1] = 0.4; colors[i3 + 2] = 1.0;
-            } else {
-                // White/Blue-ish
-                colors[i3] = 0.9; colors[i3 + 1] = 0.9; colors[i3 + 2] = 1.0;
-            }
+            // Star colors (white to light blue/purple)
+            const colorVariation = Math.random();
+            colors[i3] = 0.8 + colorVariation * 0.2;     // R
+            colors[i3 + 1] = 0.8 + colorVariation * 0.2; // G
+            colors[i3 + 2] = 0.9 + colorVariation * 0.1; // B
 
-            velocities[i3] = (Math.random() - 0.5) * 0.05;
-            velocities[i3 + 1] = (Math.random() - 0.5) * 0.05;
-            velocities[i3 + 2] = (Math.random() - 0.5) * 0.05;
+            // Random velocities for subtle movement
+            velocities[i3] = (Math.random() - 0.5) * 0.02;     // X velocity
+            velocities[i3 + 1] = (Math.random() - 0.5) * 0.02; // Y velocity
+            velocities[i3 + 2] = (Math.random() - 0.5) * 0.02; // Z velocity
 
-            twinklePhases[i] = Math.random() * Math.PI * 2;
-            twinkleSpeeds[i] = 0.5 + Math.random() * 2.0;
-            sizes[i] = 0.3 + Math.random() * 0.5;
+            // Twinkle properties
+            twinklePhases[i] = Math.random() * Math.PI * 2; // Random starting phase
+            twinkleSpeeds[i] = 0.5 + Math.random() * 1.5;   // Random twinkle speed
+            
+            // Variable star sizes
+            sizes[i] = 0.2 + Math.random() * 0.4;
         }
 
         starGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -122,13 +119,18 @@ class MeteorShower {
         starGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
 
         const starMaterial = new THREE.ShaderMaterial({
-            uniforms: { time: { value: 0 } },
+            uniforms: {
+                time: { value: 0 }
+            },
             vertexShader: `
                 attribute float size;
                 attribute vec3 color;
                 varying vec3 vColor;
+                varying float vSize;
+                
                 void main() {
                     vColor = color;
+                    vSize = size;
                     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
                     gl_PointSize = size * (300.0 / -mvPosition.z);
                     gl_Position = projectionMatrix * mvPosition;
@@ -136,11 +138,17 @@ class MeteorShower {
             `,
             fragmentShader: `
                 varying vec3 vColor;
+                varying float vSize;
+                
                 void main() {
+                    // Create circular point
                     vec2 center = gl_PointCoord - vec2(0.5);
                     float dist = length(center);
                     if (dist > 0.5) discard;
+                    
+                    // Soft edge
                     float alpha = 1.0 - smoothstep(0.3, 0.5, dist);
+                    
                     gl_FragColor = vec4(vColor, alpha * 0.8);
                 }
             `,
@@ -152,6 +160,7 @@ class MeteorShower {
         const starField = new THREE.Points(starGeometry, starMaterial);
         this.scene.add(starField);
         
+        // Store star field with animation data
         this.stars.push({
             points: starField,
             velocities: velocities,
@@ -163,109 +172,144 @@ class MeteorShower {
     }
 
     startMeteorSpawning() {
+        // Spawn meteors at regular intervals, but only if under the limit and near hero
         this.spawnInterval = setInterval(() => {
             const heroSection = document.getElementById('hero');
             const heroRect = heroSection ? heroSection.getBoundingClientRect() : null;
             const isNearHero = heroRect ? (heroRect.bottom > -300) : true;
             
+            // Only spawn meteors when near hero section
             if (isNearHero && this.meteors.length < this.maxMeteors) {
                 this.createMeteor();
             }
-        }, 1500); // Faster spawn
+        }, 2000); // Check every 2 seconds
     }
 
     createMeteor() {
+        // Random direction for meteor - only from top area
         const direction = Math.random();
         let startX, startY, velocityX, velocityY;
 
+        // 3 possible directions - all from top area
         if (direction < 0.33) {
-            startX = -60 + Math.random() * 40; startY = 40 + Math.random() * 20;
-            velocityX = 0.8 + Math.random() * 0.5; velocityY = -0.8 - Math.random() * 0.5;
+            // Top-left to bottom-right
+            startX = -60 + Math.random() * 40;
+            startY = 40 + Math.random() * 20;
+            velocityX = 0.4 + Math.random() * 0.3;
+            velocityY = -0.4 - Math.random() * 0.3;
         } else if (direction < 0.66) {
-            startX = -40 + Math.random() * 80; startY = 50 + Math.random() * 20;
-            velocityX = (Math.random() - 0.5) * 0.5; velocityY = -1.0 - Math.random() * 0.5;
+            // Top center to bottom (slight angle)
+            startX = -40 + Math.random() * 80;
+            startY = 50 + Math.random() * 20;
+            velocityX = (Math.random() - 0.5) * 0.3;
+            velocityY = -0.5 - Math.random() * 0.3;
         } else {
-            startX = 40 + Math.random() * 40; startY = 40 + Math.random() * 20;
-            velocityX = -0.8 - Math.random() * 0.5; velocityY = -0.8 - Math.random() * 0.5;
+            // Top-right to bottom-left
+            startX = 40 + Math.random() * 40;
+            startY = 40 + Math.random() * 20;
+            velocityX = -0.4 - Math.random() * 0.3;
+            velocityY = -0.4 - Math.random() * 0.3;
         }
 
+        // Create meteor trail
         const meteorGroup = new THREE.Group();
         
-        // Random Color: Cyan, Purple, or White
-        const colorRand = Math.random();
-        let meteorColor = 0xffffff;
-        let glowColor = 0xa5b4fc;
-
-        if (colorRand > 0.6) {
-            meteorColor = 0x22d3ee; // Cyan
-            glowColor = 0x22d3ee;
-        } else if (colorRand > 0.3) {
-            meteorColor = 0xd946ef; // Pink/Fuchsia
-            glowColor = 0xd946ef;
-        }
-
-        // Head
-        const headGeometry = new THREE.SphereGeometry(0.25, 8, 8);
-        const headMaterial = new THREE.MeshBasicMaterial({ color: meteorColor, transparent: true, opacity: 1 });
+        // Meteor head (bright sphere)
+        const headGeometry = new THREE.SphereGeometry(0.2, 8, 8);
+        const headMaterial = new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 1
+        });
         const head = new THREE.Mesh(headGeometry, headMaterial);
         meteorGroup.add(head);
 
-        // Trail
-        const trailLength = 5 + Math.random() * 5;
+        // Calculate trail direction based on velocity (trail should point opposite to movement)
+        const trailLength = 3 + Math.random() * 2;
         const trailPoints = [];
-        const velocityMag = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-        const trailDirX = -velocityX / velocityMag;
-        const trailDirY = -velocityY / velocityMag;
         
-        for (let i = 0; i < 25; i++) {
-            const t = i / 24;
-            trailPoints.push(new THREE.Vector3(t * trailLength * trailDirX, t * trailLength * trailDirY, 0));
+        // Normalize velocity to get direction
+        const velocityMag = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+        const trailDirX = -velocityX / velocityMag; // Opposite to movement
+        const trailDirY = -velocityY / velocityMag; // Opposite to movement
+        
+        for (let i = 0; i < 20; i++) {
+            const t = i / 19;
+            trailPoints.push(new THREE.Vector3(
+                t * trailLength * trailDirX, 
+                t * trailLength * trailDirY, 
+                0
+            ));
         }
         
         const trailGeometry = new THREE.BufferGeometry().setFromPoints(trailPoints);
         const trailMaterial = new THREE.LineBasicMaterial({
-            color: glowColor,
+            color: 0x8b9dff,
             transparent: true,
             opacity: 0.8,
-            linewidth: 2 // Note: WebGL linewidth 1 limitation exists on some browsers
+            linewidth: 2
         });
         const trail = new THREE.Line(trailGeometry, trailMaterial);
         meteorGroup.add(trail);
 
-        // Glow
-        const glowGeometry = new THREE.SphereGeometry(0.6, 16, 16);
-        const glowMaterial = new THREE.MeshBasicMaterial({ color: glowColor, transparent: true, opacity: 0.4 });
+        // Add glow effect
+        const glowGeometry = new THREE.SphereGeometry(0.4, 16, 16);
+        const glowMaterial = new THREE.MeshBasicMaterial({
+            color: 0xa5b4fc,
+            transparent: true,
+            opacity: 0.3
+        });
         const glow = new THREE.Mesh(glowGeometry, glowMaterial);
         meteorGroup.add(glow);
 
+        // Position meteor (no rotation needed as trail is directional)
         meteorGroup.position.set(startX, startY, -10 + Math.random() * 20);
+
         this.scene.add(meteorGroup);
 
-        this.meteors.push({
+        // Store meteor data
+        const meteorData = {
             group: meteorGroup,
             velocity: { x: velocityX, y: velocityY },
             life: 1.0,
-            fadeRate: 0.005 + Math.random() * 0.005,
-            head: head, trail: trail, glow: glow
-        });
+            fadeRate: 0.003 + Math.random() * 0.002,
+            head: head,
+            trail: trail,
+            glow: glow
+        };
+
+        this.meteors.push(meteorData);
     }
 
     updateMeteors() {
         for (let i = this.meteors.length - 1; i >= 0; i--) {
             const meteor = this.meteors[i];
+            
+            // Update position
             meteor.group.position.x += meteor.velocity.x;
             meteor.group.position.y += meteor.velocity.y;
+            
+            // Update life/opacity
             meteor.life -= meteor.fadeRate;
             
             if (meteor.head.material) meteor.head.material.opacity = meteor.life;
             if (meteor.trail.material) meteor.trail.material.opacity = meteor.life * 0.8;
-            if (meteor.glow.material) meteor.glow.material.opacity = meteor.life * 0.4;
+            if (meteor.glow.material) meteor.glow.material.opacity = meteor.life * 0.3;
             
-            if (meteor.life <= 0 || Math.abs(meteor.group.position.x) > 100 || Math.abs(meteor.group.position.y) > 100) {
+            // Remove dead meteors
+            if (meteor.life <= 0 || 
+                Math.abs(meteor.group.position.x) > 100 || 
+                Math.abs(meteor.group.position.y) > 100) {
                 this.scene.remove(meteor.group);
-                meteor.head.geometry.dispose(); meteor.head.material.dispose();
-                meteor.trail.geometry.dispose(); meteor.trail.material.dispose();
-                meteor.glow.geometry.dispose(); meteor.glow.material.dispose();
+                
+                // Dispose of geometries and materials
+                meteor.head.geometry.dispose();
+                meteor.head.material.dispose();
+                meteor.trail.geometry.dispose();
+                meteor.trail.material.dispose();
+                meteor.glow.geometry.dispose();
+                meteor.glow.material.dispose();
+                
                 this.meteors.splice(i, 1);
             }
         }
@@ -273,10 +317,12 @@ class MeteorShower {
 
     animateFrame() {
         if (!this.container) return;
+        // Performance optimization: Check if canvas is visible in viewport (cache result to avoid layout thrash)
         const rect = this.container.getBoundingClientRect();
         const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
         this.visibleCache = isVisible;
 
+        // Reduce quality when scrolled away from hero section
         const heroSection = document.getElementById('hero');
         const heroRect = heroSection ? heroSection.getBoundingClientRect() : null;
         const isNearHero = heroRect ? (heroRect.bottom > -200) : true;
@@ -284,13 +330,17 @@ class MeteorShower {
 
         if (!isNearHero) {
             this.frameSkipCounter++;
-            if (this.frameSkipCounter % 3 !== 0) return;
+            if (this.frameSkipCounter % 3 !== 0) {
+                return; // throttle work when far from hero
+            }
         } else {
             this.frameSkipCounter = 0;
         }
 
+        // Update meteors
         this.updateMeteors();
 
+        // Stars: batch update
         this.stars.forEach(starData => {
             const positions = starData.points.geometry.attributes.position.array;
             const sizes = starData.points.geometry.attributes.size.array;
@@ -307,19 +357,20 @@ class MeteorShower {
                 positions[i3] += velocities[i3];
                 positions[i3 + 1] += velocities[i3 + 1];
                 positions[i3 + 2] += velocities[i3 + 2];
-                // Wrap
-                if (positions[i3] > 150) positions[i3] = -150; else if (positions[i3] < -150) positions[i3] = 150;
-                if (positions[i3 + 1] > 150) positions[i3 + 1] = -150; else if (positions[i3 + 1] < -150) positions[i3 + 1] = 150;
-
+                // Wrap boundaries
+                if (positions[i3] > 100) positions[i3] = -100; else if (positions[i3] < -100) positions[i3] = 100;
+                if (positions[i3 + 1] > 100) positions[i3 + 1] = -100; else if (positions[i3 + 1] < -100) positions[i3 + 1] = 100;
+                if (positions[i3 + 2] > 100) positions[i3 + 2] = -100; else if (positions[i3 + 2] < -100) positions[i3 + 2] = 100;
                 if (updateTwinkle) {
-                    const baseSize = 0.3 + (i % 100) * 0.005;
-                    const twinkle = Math.sin(time * twinkleSpeeds[i] + twinklePhases[i]) * 0.3 + 0.7;
+                    const baseSize = 0.2 + (i % 100) * 0.004;
+                    const twinkle = Math.sin(time * twinkleSpeeds[i] + twinklePhases[i]) * 0.25 + 0.75;
                     sizes[i] = baseSize * twinkle;
                 }
             }
             starData.points.geometry.attributes.position.needsUpdate = true;
             if (updateTwinkle) starData.points.geometry.attributes.size.needsUpdate = true;
-            starData.points.rotation.y += 0.0002; // Rotate whole field slowly
+            starData.points.rotation.y += 0.0001;
+            starData.points.rotation.x += 0.00005;
         });
 
         this.renderer.render(this.scene, this.camera);
@@ -332,19 +383,54 @@ class MeteorShower {
     }
 
     destroy() {
-        if (window.rafScheduler) window.rafScheduler.unsubscribe('meteor-shower');
-        if (this.spawnInterval) clearInterval(this.spawnInterval);
-        // Disposal logic...
+        // Clean up
+        if (window.rafScheduler) {
+            window.rafScheduler.unsubscribe('meteor-shower');
+        }
+        
+        if (this.spawnInterval) {
+            clearInterval(this.spawnInterval);
+        }
+        
+        // Dispose of all objects
+        this.meteors.forEach(meteor => {
+            this.scene.remove(meteor.group);
+            meteor.head.geometry.dispose();
+            meteor.head.material.dispose();
+            meteor.trail.geometry.dispose();
+            meteor.trail.material.dispose();
+            meteor.glow.geometry.dispose();
+            meteor.glow.material.dispose();
+        });
+        
+        this.stars.forEach(starData => {
+            starData.points.geometry.dispose();
+            starData.points.material.dispose();
+            this.scene.remove(starData.points);
+        });
+        
+        this.renderer.dispose();
+        if (this.container && this.container.parentNode) {
+            this.container.parentNode.removeChild(this.container);
+        }
     }
 }
 
+// Initialize meteor shower when DOM is ready and Three.js is loaded
 function initMeteorShower() {
-    if (typeof THREE !== 'undefined') window.meteorShower = new MeteorShower();
-    else console.error('Three.js not loaded.');
+    if (typeof THREE !== 'undefined') {
+        window.meteorShower = new MeteorShower();
+    } else {
+        console.error('Three.js not loaded. Please include Three.js library.');
+    }
 }
 
+// Wait for DOM and Three.js to load
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => setTimeout(initMeteorShower, 100));
+    document.addEventListener('DOMContentLoaded', () => {
+        // Give a small delay to ensure Three.js is loaded
+        setTimeout(initMeteorShower, 100);
+    });
 } else {
     setTimeout(initMeteorShower, 100);
 }
