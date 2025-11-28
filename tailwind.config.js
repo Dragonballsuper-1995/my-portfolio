@@ -1,15 +1,12 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
-    './index.html',
-    './js/**/*.js'
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
-    theme: {
-    extend: {
-        fontFamily: {
-        sans: ['Inter var', 'Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'Apple Color Emoji', 'Segoe UI Emoji'],
-        },
-    },
-    },
+  darkMode: 'class', // Keeping class based dark mode from original
+  theme: {
+    extend: {},
+  },
   plugins: [],
 }

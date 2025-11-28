@@ -1,0 +1,173 @@
+/* Loading overlay styles — matches site glass aesthetic */
+#site-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(1200px circle at 20% 10%, rgba(15,23,42,0.95) 0%, rgba(11,18,32,0.98) 35%, rgba(7,13,26,0.995) 60%, rgba(5,10,19,1) 100%);
+}
+#site-loader .loader-card {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  border-radius: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(2,6,23,0.98), rgba(5,10,19,0.995));
+  border-top: 1px solid rgba(255,255,255,0.02);
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: none;
+  box-sizing: border-box;
+}
+#site-loader .loader-content {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+#site-loader .loader-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-width: 220px;
+  margin-right: 0;
+  position: fixed;
+  left: 0;
+  top: 80px;
+  width: 100vw;
+  z-index: 22;
+  pointer-events: none;
+}
+#site-loader .loader-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background: linear-gradient(135deg,#6366f1,#06b6d4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+#site-loader .loader-text {
+  color: #f8fafc;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  max-width: 100%;
+}
+#site-loader .loader-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+#site-loader .loader-sub {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+#site-loader .loader-progress {
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  display: block;
+  z-index: 10;
+}
+#site-loader .progress-bar {
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255,255,255,0.04);
+  border-radius: 0;
+  overflow: hidden;
+  border: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+}
+#site-loader .progress-fill {
+  width: 100vw;
+  height: 0vh;
+  background: linear-gradient(180deg,#06b6d4 0%,#6366f1 100%);
+  border-radius: 0;
+  transition: none; /* progress controlled by JS for smooth frame-based animation */
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 11;
+}
+#site-loader .progress-percent {
+  color: #e6eef3;
+  font-weight: 900;
+  font-size: clamp(56px, 12vw, 160px);
+  line-height: 1.05;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  text-shadow: 0 6px 20px rgba(2,6,23,0.6);
+  z-index: 30;
+  pointer-events: none;
+}
+#site-loader .spinner {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 4px solid rgba(255,255,255,0.06);
+  border-top-color: rgba(255,255,255,0.9);
+  animation: spin 1s linear infinite;
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--progress-pct, 0) * 1vh - 80px);
+  transform: translate(-50%, 50%);
+  z-index: 12;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+#site-loader .loader-status {
+  color: #dff3fb;
+  font-weight: 600;
+  font-size: 1.08rem;
+  opacity: 0.95;
+  margin-top: 10px;
+  text-align: center;
+  width: 100vw;
+  position: fixed;
+  left: 0;
+  top: 32px;
+  z-index: 25;
+  pointer-events: none;
+}
+#site-loader.fade-out { opacity: 0; transition: opacity 450ms ease; pointer-events: none; }
+#site-loader.removed { display: none; }
+@media (max-width:900px) {
+  #site-loader .loader-card { flex-direction: column; align-items: center; justify-content: center; padding: 0; }
+  #site-loader .loader-brand { left: 0; top: 60px; width: 100vw; }
+  #site-loader .loader-progress { min-width: 0; max-width: 100vw; margin-left: 0; height: 100vh; }
+  #site-loader .progress-bar { max-width: 100vw; height: 100vh; }
+  #site-loader .progress-percent { font-size: clamp(32px, 16vw, 72px); left: 50%; top: 50%; }
+  #site-loader .spinner { left: 50%; bottom: calc(var(--progress-pct, 0) * 1vh - 60px); }
+  #site-loader .loader-status { top: 16px; font-size: 1rem; }
+}

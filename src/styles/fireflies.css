@@ -1,0 +1,265 @@
+/* Fireflies Glow Effect on Hover */
+/* Performance optimized with translate3d for GPU acceleration */
+
+/* Keyframes for firefly path animations */
+@keyframes firefly-float-1 {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    25% {
+        transform: translate3d(15px, -20px, 0);
+    }
+    50% {
+        transform: translate3d(-10px, -35px, 0);
+    }
+    75% {
+        transform: translate3d(20px, -15px, 0);
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes firefly-float-2 {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    25% {
+        transform: translate3d(-18px, -25px, 0);
+    }
+    50% {
+        transform: translate3d(12px, -40px, 0);
+    }
+    75% {
+        transform: translate3d(-15px, -20px, 0);
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes firefly-float-3 {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    25% {
+        transform: translate3d(10px, -30px, 0);
+    }
+    50% {
+        transform: translate3d(-20px, -15px, 0);
+    }
+    75% {
+        transform: translate3d(15px, -25px, 0);
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes firefly-float-4 {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    25% {
+        transform: translate3d(-12px, -22px, 0);
+    }
+    50% {
+        transform: translate3d(18px, -28px, 0);
+    }
+    75% {
+        transform: translate3d(-8px, -35px, 0);
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes firefly-blink {
+    0%, 20%, 40%, 60%, 80%, 100% {
+        opacity: 0.3;
+    }
+    10%, 30%, 50%, 70%, 90% {
+        opacity: 1;
+    }
+}
+
+/* Firefly container */
+.firefly-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+    z-index: 10;
+    contain: layout style paint; /* Performance optimization */
+}
+
+/* Pause animations by default to save performance */
+.firefly-container .firefly {
+    animation-play-state: paused;
+}
+
+/* Resume on hover */
+.glass-card:hover .firefly-container .firefly,
+.glass-button:hover .firefly-container .firefly,
+.glass-button-primary:hover .firefly-container .firefly,
+.glass-effect:hover .firefly-container .firefly,
+.social-icon:hover .firefly-container .firefly,
+.dock-link:hover .firefly-container .firefly,
+.skill-badge:hover .firefly-container .firefly {
+    animation-play-state: running;
+}
+
+/* Individual firefly dots */
+.firefly {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, var(--firefly-color, #e98f4a) 40%, transparent 70%);
+    box-shadow:
+        0 0 8px var(--firefly-color, #e98f4a),
+        0 0 12px var(--firefly-color, #e98f4a),
+        0 0 16px var(--firefly-color, #e98f4a);
+    opacity: 0.3;
+    animation: firefly-blink 3s infinite ease-in-out;
+    will-change: transform, opacity; /* GPU acceleration hint */
+    backface-visibility: hidden; /* Performance optimization */
+}
+
+.firefly:nth-child(1) {
+    left: 20%;
+    top: 50%;
+    animation: firefly-float-1 8s infinite ease-in-out, firefly-blink 2.5s infinite ease-in-out;
+    animation-delay: 0s, 0s;
+}
+
+.firefly:nth-child(2) {
+    left: 60%;
+    top: 40%;
+    animation: firefly-float-2 10s infinite ease-in-out, firefly-blink 3s infinite ease-in-out;
+    animation-delay: 0.5s, 0.3s;
+    width: 4px;
+    height: 4px;
+}
+
+.firefly:nth-child(3) {
+    left: 80%;
+    top: 60%;
+    animation: firefly-float-3 7s infinite ease-in-out, firefly-blink 2.8s infinite ease-in-out;
+    animation-delay: 1s, 0.7s;
+    width: 2.5px;
+    height: 2.5px;
+}
+
+.firefly:nth-child(4) {
+    left: 30%;
+    top: 70%;
+    animation: firefly-float-4 9s infinite ease-in-out, firefly-blink 3.2s infinite ease-in-out;
+    animation-delay: 1.5s, 1s;
+}
+
+.firefly:nth-child(5) {
+    left: 70%;
+    top: 30%;
+    animation: firefly-float-1 6s infinite ease-in-out, firefly-blink 2.7s infinite ease-in-out;
+    animation-delay: 2s, 1.5s;
+    width: 3.5px;
+    height: 3.5px;
+}
+
+.firefly:nth-child(6) {
+    left: 45%;
+    top: 55%;
+    animation: firefly-float-3 8.5s infinite ease-in-out, firefly-blink 3.1s infinite ease-in-out;
+    animation-delay: 0.8s, 0.5s;
+}
+
+/* Hover effects for different elements */
+
+/* Project cards */
+.glass-card:hover .firefly-container,
+.glass-card:focus-within .firefly-container {
+    opacity: 1;
+}
+
+.glass-card {
+    --firefly-color: rgba(129, 140, 248, 0.9);
+}
+
+/* Buttons */
+.glass-button:hover .firefly-container,
+.glass-button-primary:hover .firefly-container,
+.glass-button:focus .firefly-container,
+.glass-button-primary:focus .firefly-container {
+    opacity: 1;
+}
+
+.glass-button,
+.glass-button-primary {
+    position: relative;
+    overflow: visible;
+    --firefly-color: rgba(167, 139, 250, 0.9);
+}
+
+/* Social icons */
+.social-icon:hover .firefly-container,
+.social-icon:focus .firefly-container {
+    opacity: 1;
+}
+
+.social-icon {
+    position: relative;
+    --firefly-color: rgba(129, 140, 248, 0.9);
+}
+
+/* Dock links */
+.dock-link:hover .firefly-container,
+.dock-link:focus .firefly-container {
+    opacity: 1;
+}
+
+.dock-link {
+    position: relative;
+    --firefly-color: rgba(99, 102, 241, 0.9);
+}
+
+/* Glass effect cards */
+.glass-effect:hover .firefly-container,
+.glass-effect:focus-within .firefly-container {
+    opacity: 1;
+}
+
+.glass-effect {
+    position: relative;
+    --firefly-color: rgba(139, 92, 246, 0.9);
+}
+
+/* Skill badges */
+.skill-badge:hover .firefly-container,
+.skill-badge:focus .firefly-container {
+    opacity: 1;
+}
+
+.skill-badge {
+    position: relative;
+    --firefly-color: rgba(165, 180, 252, 0.9);
+}
+
+/* Enhanced glow on hover */
+.glass-card:hover,
+.glass-button:hover,
+.glass-button-primary:hover {
+    box-shadow:
+        0 0 20px rgba(129, 140, 248, 0.3),
+        0 0 40px rgba(129, 140, 248, 0.2),
+        inset 0 0 20px rgba(129, 140, 248, 0.1);
+}
+
+/* Accessibility: Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+    .firefly-container {
+        display: none;
+    }
+}

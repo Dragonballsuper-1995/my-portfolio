@@ -1,0 +1,172 @@
+/* Nabla Color Font for Typewriter Effect */
+@import url("https://fonts.googleapis.com/css2?family=Nabla:EDPT,EHLT@30..200,24&display=swap");
+
+/* Font palette definitions for dark and light modes */
+/* Force monochrome palettes so the glyphs render exactly in the requested colors */
+@font-palette-values --Nabla-ForceDark {
+  font-family: Nabla;
+  base-palette: 0;
+  /* Override multiple slots to ensure a uniform color across layers */
+  override-colors:
+    0 #a5b4fc,
+    1 #a5b4fc,
+    2 #a5b4fc,
+    3 #a5b4fc,
+    4 #a5b4fc,
+    5 #a5b4fc,
+    6 #a5b4fc,
+    7 #a5b4fc,
+    8 #a5b4fc,
+    9 #a5b4fc,
+    10 #a5b4fc,
+    11 #a5b4fc,
+    12 #a5b4fc,
+    13 #a5b4fc,
+    14 #a5b4fc,
+    15 #a5b4fc;
+}
+
+@font-palette-values --Nabla-ForceLight {
+  font-family: Nabla;
+  base-palette: 0;
+  /* Override multiple slots to ensure a uniform color across layers */
+  override-colors:
+    0 #0e7490,
+    1 #0e7490,
+    2 #0e7490,
+    3 #0e7490,
+    4 #0e7490,
+    5 #0e7490,
+    6 #0e7490,
+    7 #0e7490,
+    8 #0e7490,
+    9 #0e7490,
+    10 #0e7490,
+    11 #0e7490,
+    12 #0e7490,
+    13 #0e7490,
+    14 #0e7490,
+    15 #0e7490;
+}
+
+/* Typewriter text wrapper */
+#hero-subtitle {
+  font-family: Nabla, system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.05em;
+}
+
+/* Individual letter styling with depth animation */
+#typewriter-text {
+  display: inline-block;
+  position: relative;
+  color: #a5b4fc; /* Dark mode color */
+}
+
+/* Each character will be wrapped in a span via JavaScript */
+#typewriter-text span {
+  animation: nabla-depth 2.2s cubic-bezier(0.4, 0, 0.2, 1) alternate infinite;
+  position: relative;
+  display: inline-block;
+  font-variation-settings: "EDPT" 30;
+  font-palette: --Nabla-ForceDark;
+  transform-origin: center;
+  will-change: transform, font-variation-settings;
+  color: inherit;
+}
+
+/* Staggered animation delays for wave effect */
+/* Per-character delays are now assigned inline in JS when appending spans,
+   which prevents animation restarts and keeps motion smooth during typing. */
+
+/* Depth animation keyframes - creates 3D pop effect */
+@keyframes nabla-depth {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+    font-variation-settings: "EDPT" 30;
+  }
+  100% {
+    transform: translateX(0.08em) translateY(0.05em) scale(1.03);
+    font-variation-settings: "EDPT" 160;
+  }
+}
+
+/* Typewriter cursor with Nabla styling */
+.typewriter-cursor {
+  font-family: Nabla, system-ui, -apple-system, sans-serif;
+  animation: blink 1s step-end infinite, cursor-pulse 2s ease-in-out infinite;
+  color: #a5b4fc;
+  font-variation-settings: "EDPT" 100;
+  font-palette: --Nabla-ForceDark;
+  display: inline-block;
+  margin-left: 0.1em;
+}
+
+/* Cursor pulse animation for extra flair */
+@keyframes cursor-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+/* Light mode optimizations */
+.light-mode #typewriter-text {
+  color: #0e7490; /* Light mode color */
+}
+
+
+.light-mode #typewriter-text span {
+  font-palette: --Nabla-ForceLight;
+}
+
+.light-mode .typewriter-cursor {
+  color: #0e7490;
+  font-palette: --Nabla-ForceLight;
+}
+
+/* Fallback tint if font-palette overrides aren't supported */
+@supports not (font-palette: --Nabla-ForceDark) {
+  #typewriter-text span { filter: grayscale(1) brightness(1.2); }
+  .light-mode #typewriter-text span { filter: grayscale(1) brightness(0.9); }
+}
+
+/* Performance optimization: Pause animations when out of viewport */
+@media (prefers-reduced-motion: reduce) {
+  #typewriter-text span {
+    animation: none !important;
+    font-variation-settings: "EDPT" 100;
+  }
+
+  .typewriter-cursor {
+    animation: blink 1s step-end infinite !important;
+  }
+}
+
+/* Mobile optimization: Reduce animation complexity */
+@media (max-width: 768px) {
+  @keyframes nabla-depth {
+    0% {
+      transform: translateX(0) translateY(0);
+      font-variation-settings: "EDPT" 40;
+    }
+    100% {
+      transform: translateX(0.06em) translateY(0.04em);
+      font-variation-settings: "EDPT" 130;
+    }
+  }
+
+  #typewriter-text span {
+    animation-duration: 1.6s;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  #typewriter-text span {
+    font-variation-settings: "EDPT" 120 !important;
+  }
+}

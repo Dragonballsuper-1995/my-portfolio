@@ -1,34 +1,31 @@
 {
   "name": "my-portfolio",
-  "version": "1.0.0",
   "private": true,
+  "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "build:css": "postcss css/tailwind.build.css -o css/tailwind.min.css",
-    "build:js": "terser js/*.js -o js/bundle.min.js -c -m",
-    "watch:css": "postcss css/tw.css -o css/tailwind.build.css -w",
-    "minify:css": "tailwindcss -i css/tw.css -o css/tailwind.build.css --minify"
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-react": "^0.309.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "three": "^0.160.0"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.22",
-    "cssnano": "^6.1.2",
-    "postcss": "^8.5.6",
-    "postcss-cli": "^11.0.1",
-    "postcss-import": "^16.1.1",
-    "tailwindcss": "^3.4.14",
-    "terser": "^5.44.1"
-  },
-  "description": "![MIT License](https://img.shields.io/badge/License-MIT-green.svg)",
-  "main": "postcss.config.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Dragonballsuper-1995/my-portfolio.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/Dragonballsuper-1995/my-portfolio/issues"
-  },
-  "homepage": "https://github.com/Dragonballsuper-1995/my-portfolio#readme"
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.0.12"
+  }
 }

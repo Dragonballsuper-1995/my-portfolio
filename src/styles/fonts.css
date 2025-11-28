@@ -1,0 +1,41 @@
+/* Self-hosted Inter (variable) */
+@font-face {
+  font-family: "Inter var";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src:
+    local("Inter Variable"),
+    local("InterVar"),
+  url("../Assets/fonts/InterVariable.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter var";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src:
+    local("Inter Variable Italic"),
+  url("../Assets/fonts/InterVariable-Italic.woff2") format("woff2");
+}
+
+/* Map “Inter” to the same files so either family name works */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src:
+    local("Inter"),
+  url("../Assets/fonts/InterVariable.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src:
+    local("Inter Italic"),
+  url("../Assets/fonts/InterVariable-Italic.woff2") format("woff2");
+}
