@@ -1,0 +1,30 @@
+.firefly {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background-color: #fbbf24;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #fbbf24, 0 0 20px #fbbf24;
+  opacity: 0;
+  animation: fly linear infinite;
+}
+
+@keyframes fly {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(100px, -100px); /* Adjust movement range */
+    opacity: 0;
+  }
+}
